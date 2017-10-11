@@ -1,38 +1,40 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import json
 from sys import argv
 from pypinyin import pinyin as py
 from pypinyin import Style as ST
 
-if __name__ == '__main__':
-    project = '微软'
+config_path = '../../config.json'
+keytab_path = '../../keymap.tab'
 
-    file = open('str2key.js', 'r', encoding='utf8')
-    keyMap = json.loads(file.read())
-    file.close()
+def printHelp():
+    print('convert.py reverse')
+    print('\tgenerate reverse key map file\n')
+    print('convert.py gen <filename> [<project_name>]')
+    print('\tgenerate data from article with project, default project is Microsoft\n')
+    print('convert.py genb <string> <project_name>')
+    print('\tgenerate data from string with project, default project is Microsoft\n')
 
-    file = open(argv[1], 'r', encoding='utf8')
-    article = file.read()
-    file.close()
-    lhTone = py(article, style = ST.INITIALS)
-    rhTone = py(article, style = ST.FINALS_TONE)
-    rhCh = py(article, style = ST.FINALS)
-    print(lhTone)
-    print(rhTone)
-    print(rhCh)
-    tone = [ [lhTone[i][0], rhTone[i][0]] for i in range(len(article)) ]
+def genData(data, keymap):
+    lhTone = py(article, style=ST.INITIALS)
+    rhTone = py(article, style=ST.FINALS_TONE)
+    rhCh = py(article, style=ST.FINALS)
+
+    tone = [[lhTone[i][0], rhTone[i][0]] for i in range(len(article))]
     keys = []
     for i in range(len(article)):
         tmp = []
-        if not lhTone[i][0] in keyMap[project]:
+        if not lhTone[i][0] in keymap:
             tmp.append('')
         else:
-            tmp.append(keyMap[project][lhTone[i][0]])
-        if not rhCh[i][0] in keyMap[project]:
+            tmp.append(keymap[lhTone[i][0]])
+        if not rhCh[i][0] in keymap:
             tmp.append('')
         else:
-            tmp.append(keyMap[project][rhCh[i][0]])
+            tmp.append(keymap[rhCh[i][0]])
         keys.append(tmp)
-    
+
     rlt = [
         {
             'word': article[i],
@@ -41,21 +43,60 @@ if __name__ == '__main__':
         } for i in range(len(article))
     ]
     print(rlt)
-    
 
-    # file = open('config.json', 'r', encoding='utf8')
-    # ctx = file.read()
-    # file.close()
-    # cfg = json.loads(ctx)
-    # rlt = {}
-    # for project in cfg:
-        # rlt[project] = {}
-        # key_map = cfg[project]['key_map']
-        # for key in key_map:
-            # for ch in key_map[key]:
-                # rlt[project][ch] = key
-    # ctx = json.dumps(rlt)
-    # file = open('str2key.js', 'w', encoding='utf8')
-    # file.write(ctx)
-    # file.write('\n')
-    # file.close()
+if __name__ == '__main__':
+    if len(argv) <= 1:
+        print('error')
+        printHelp()
+        exit(-1)
+
+    if argv[1] == 'reverse':
+        file = open(config_path, 'r', encoding='utf8')
+        cfg = json.loads(file.read())['project']
+        file.close()
+        rlt = {}
+        for project in cfg:
+            rlt[project] = {}
+            key_map = cfg[project]['key_map']
+            for key in key_map:
+                for ch in key_map[key]:
+                    rlt[project][ch] = key
+        file = open(keytab_path, 'w', encoding='utf8')
+        file.write(json.dumps(rlt))
+        file.write('\n')
+        file.close()
+        exit(0)
+    elif argv[1] == 'help':
+        printHelp()
+        exit(0)
+
+    project = 'weiruan'
+    article = ''
+    if argv[1] == 'gen':
+        if len(argv) < 3:
+            print('error')
+            exit(-1)
+        file = open(argv[2], 'r', encoding='utf8')
+        article = file.read()
+        file.close()
+    elif argv[1] == 'genb':
+        if len(argv) < 3:
+            print('error')
+            exit(-1)
+        article = argv[2]
+    else:
+        print('error')
+        printHelp()
+        exit(-1)
+
+    if len(argv) >= 4:
+        project = argv[3]
+    file = open(keytab_path, 'r', encoding='utf8')
+    keymap = json.loads(file.read())
+    file.close()
+    if not project in keymap:
+        print('error')
+        exit(-1)
+
+    genData(article, keymap[project])
+    exit(0)
