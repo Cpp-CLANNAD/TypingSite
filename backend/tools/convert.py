@@ -33,6 +33,16 @@ def genData(data, keymap):
             tmp.append('')
         else:
             tmp.append(keymap[rhCh[i][0]])
+        if tmp[0] == '':
+            if keymap['0'] == '1':
+                tmp[0] = rhCh[i][0][0]
+            elif keymap['0'] == '2':
+                if len(rhCh[i][0]) == 2:
+                    tmp = [rhCh[i][0][0], rhCh[i][0][1]]
+                else:
+                    tmp[0] = rhCh[i][0][0]
+            else:
+                tmp[0] = keymap['0']
         keys.append(tmp)
 
     rlt = [
@@ -61,6 +71,7 @@ if __name__ == '__main__':
             for key in key_map:
                 for ch in key_map[key]:
                     rlt[project][ch] = key
+            rlt[project]['0'] = cfg[project]['0']
         file = open(keytab_path, 'w', encoding='utf8')
         file.write(json.dumps(rlt))
         file.write('\n')
