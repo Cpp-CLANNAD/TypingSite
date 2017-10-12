@@ -50,16 +50,24 @@
             text-align: center;
         }
 
-        .tp-word-box.over .tp-word {
+        .tp-word-box.waiting-enter-sm .tp-sm {
+            text-decoration: underline;
+        }
+
+        .tp-word-box.waiting-enter-ym .tp-ym {
+            text-decoration: underline;
+        }
+
+        .tp-word-box.word-enter-finish .tp-word {
             color: green;
         }
 
-        .tp-word-box.over + .tp-symbol-box {
+        .tp-word-box.word-enter-finish + .tp-symbol-box {
             color: green;
         }
 
-        .hidden-over.typing-panel .tp-word-box.over,
-        .hidden-over.typing-panel .tp-word-box.over + .tp-symbol-box {
+        .hidden-over.typing-panel .tp-word-box.word-enter-finish,
+        .hidden-over.typing-panel .tp-word-box.word-enter-finish + .tp-symbol-box {
             display: none;
         }
 
@@ -119,13 +127,43 @@
         },
         {
             "word": "！"
+        },
+        {
+            "word": "偶",
+            "desc": ["ǒu"],
+            "dmap": ["ou"]
+        },
+        {
+            "word": "昂",
+            "desc": ["áng"],
+            "dmap": ["ang"]
+        },
+        {
+            "word": "天",
+            "desc": ["t", "iān"],
+            "dmap": ["t", "ian"]
+        },
+        {
+            "word": "只",
+            "desc": ["zh", "ǐ"],
+            "dmap": ["zh", "i"]
+        },
+        {
+            "word": "啊",
+            "desc": ["a"],
+            "dmap": ["a"]
+        },
+        {
+            "word": "！"
         }
     ];
 
-        // 零声母拼音转换为双拼形式
+    // 零声母拼音转换为双拼形式
     function lingshengmuToShuangping(val ,type) {
         var vals = ['a', 'an', 'ai', 'ao', 'ang', 'e', 'en', 'ei', 'er', 'eng', 'o', 'ou'];
+
         if(vals.includes(val) === false) throw new Error();
+
         switch(type) {
             case 1:
                 return [val[0], val];
@@ -145,68 +183,120 @@
     function reverseShuangpinKeyMap(keyMap) {
         var rv = {};
         for(let key in keyMap) {
-            if(keyMap.hasOwnProperty(key)) {
-                let val = keyMap[key];
+            if(!keyMap.hasOwnProperty(key)) break;
+            
+            let val = keyMap[key];
 
-                // 声母
-                if(val[0]) {
-                    rv[val[0]] = key;
-                }
+            // 声母
+            if(val[0]) {
+                rv[val[0]] = key;
+            }
 
-                // 韵母
-                for(let ym of val[1]) {
-                    rv[ym] = key;
-                }
+            // 韵母
+            for(let ym of val[1]) {
+                rv[ym] = key;
             }
         }
 
         return rv;
     }
     
-    var rvKeyMap = reverseShuangpinKeyMap(shuangpinKeyMap['小鹤双拼']['key_map']);
-    var html = '';
-    html += '<article class="typing-panel">';
-    for(let wordInfo of article) {
-        let{word, desc, dmap} = wordInfo;
-
-        if(!(desc === undefined && dmap === undefined || desc.length === dmap.length)) throw new Error();
-
-        if(desc && desc.length === 1) {
-            // 扩展零声母拼音数组
-            desc = ['', ...desc];
-            dmap = lingshengmuToShuangping(dmap[0], shuangpinKeyMap['小鹤双拼']['0']);
-        }
-        
-        html += `
-        <div class="${desc ? 'tp-word-box' : 'tp-symbol-box'}">
-            <div class="tp-pinyin">
-                <span class="tp-sm">${desc ? desc[0] : ''}</span>
-                <span class="tp-ym">${desc ? desc[1] : ''}</span>
-            </div>
-            <div class="tp-word">${word}</div>
-            <div class="tp-keys">
-                <span class="tp-sm">${dmap ? rvKeyMap[dmap[0]] : ''}</span>
-                <span class="tp-ym">${dmap ? rvKeyMap[dmap[1]] : ''}</span>
-            </div>
-        </div>
-        `;
-    }
-    html += '</article>';
-
-    document.body.innerHTML = html;
-
-    var words = document.querySelectorAll('.typing-panel > .tp-word-box');
 
     class TypingPanel {
         constructor() {
+            this.init();
+        }
+
+        createView() {
+            var rvKeyMap = reverseShuangpinKeyMap(shuangpinKeyMap['小鹤双拼']['key_map']);
+            var html = '';
+            html += '<article class="typing-panel">';
+            for(let wordInfo of article) {
+                let{word, desc, dmap} = wordInfo;
+
+                if(!(desc === undefined && dmap === undefined || desc.length === dmap.length)) throw new Error();
+
+                if(desc && desc.length === 1) {
+                    // 扩展零声母拼音数组
+                    desc = ['', ...desc];
+                    dmap = lingshengmuToShuangping(dmap[0], shuangpinKeyMap['小鹤双拼']['0']);
+                }
+                
+                html += `
+                <div class="${desc ? 'tp-word-box' : 'tp-symbol-box'}">
+                    <div class="tp-pinyin">
+                        <span class="tp-sm">${desc ? desc[0] : ''}</span>
+                        <span class="tp-ym">${desc ? desc[1] : ''}</span>
+                    </div>
+                    <div class="tp-word">${word}</div>
+                    <div class="tp-keys">
+                        <span class="tp-sm">${dmap ? rvKeyMap[dmap[0]] : ''}</span>
+                        <span class="tp-ym">${dmap ? rvKeyMap[dmap[1]] : ''}</span>
+                    </div>
+                </div>
+                `;
+            }
+            html += '</article>';
+
+            document.body.innerHTML = html;
+        }
+        
+        init() {
+            this.createView();
             this.el = document.querySelector('.typing-panel');
-            this.words = words;
+            this.words = Array.from(document.querySelectorAll('.typing-panel > .tp-word-box'));
+            this.length = this.words.length;
+            this.current = {
+                position: 0,
+                state: TypingPanel.wordState.initial
+            }
         }
 
         nextStep() {
-            
+            if(this.current.position === this.words.length - 1 && this.current.state === TypingPanel.wordState.wordEnterFinish) return;
+
+            if(this.current.state === TypingPanel.wordState.initial) {
+                if(this.current.position !== 0) throw new Error();
+                this.current.state = TypingPanel.wordState.waitingEnterSm;
+                
+            } else if (this.current.state === TypingPanel.wordState.waitingEnterSm) {
+                this.current.state = TypingPanel.wordState.waitingEnterYm;
+
+            } else if (this.current.state === TypingPanel.wordState.waitingEnterYm) {
+                this.current.state = TypingPanel.wordState.wordEnterFinish;
+
+            } else if (this.current.state === TypingPanel.wordState.wordEnterFinish) {
+                this.current.position++;
+                this.current.state = TypingPanel.wordState.waitingEnterSm;
+                
+            } else {
+                throw new Error();
+            }
+
+            let word = this.words[this.current.position],
+                state = this.current.state;
+
+            if(this.current.state === TypingPanel.wordState.waitingEnterSm) {
+                word.classList.add('waiting-enter-sm');
+            } else if (this.current.state === TypingPanel.wordState.waitingEnterYm) {
+                word.classList.remove('waiting-enter-sm');
+                word.classList.add('waiting-enter-ym');
+            } else if (this.current.state === TypingPanel.wordState.wordEnterFinish) {
+                word.classList.remove('waiting-enter-ym');
+                word.classList.add('word-enter-finish');
+                this.nextStep();
+            }
         }
     }
+
+    TypingPanel.wordState = {
+        initial: 0,
+        waitingEnterSm: 1,
+        waitingEnterYm: 2,
+        wordEnterFinish: 3
+    }
+
+    window.tpl = new TypingPanel();
     </script>
 </body>
 </html>
