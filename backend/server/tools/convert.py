@@ -5,9 +5,43 @@ from sys import argv
 from pypinyin import pinyin as py
 from pypinyin import Style as ST
 
-config_path = '../../config.json'
-keytab_path = '../../keymap.js'
-strtab_path = '../../strmap.js'
+class TableConfig:
+    def reset(self):
+        self.config_path = '../../config.json'
+        self.keytab_path = '../../keymap.json'
+        self.strtab_path = '../../strmap.json'
+
+    def __init__(self):
+        self.reset()
+
+    def setConfig(self, filename):
+        self.config_path = filename
+
+    def setKeytab(self, filename):
+        self.keytab_path = filename
+
+    def setStrtab(self, filename):
+        self.strtab_path = filename
+
+    def getConfig(self):
+        return self.config_path
+
+    def getKeytab(self):
+        return self.keytab_path
+
+    def getStrtab(self):
+        return self.strtab_path
+
+TableConfig config
+
+def getKeymap(project):
+    file = open(config.getStrtab(), 'r', encoding='utf8')
+    keymap = json.loads(file.read())
+    file.close()
+    if project in keymap:
+        return keymap[project]
+    else:
+        return None
 
 def printHelp():
     print('')
@@ -18,7 +52,8 @@ def printHelp():
     print('convert.py genb <string> <project_name>')
     print('\tgenerate data from string with project, default project is Microsoft\n')
 
-def genData(data, keymap):
+
+def articleToObject(article, keymap):
     lhTone = py(article, style=ST.INITIALS)
     rhTone = py(article, style=ST.FINALS_TONE)
     rhCh = py(article, style=ST.FINALS)
@@ -67,14 +102,19 @@ def genData(data, keymap):
     #     } for i in range(len(article))
     # ]
     # 非汉字desc/dmap删除项目
-    rlt = []
+    ret = { 'article': [] }
+    rlt = ret['article']
     for i in range(len(article)):
         tmp = { 'word': article[i] }
         if tone[i][0] != article[i]:
             tmp['desc'] = tone[i]
             tmp['dmap'] = keys[i]
         rlt.append(tmp)
-    print(json.dumps(rlt, ensure_ascii=False))
+    return ret
+    # json.dumps(rlt, ensure_ascii=False)
+
+def articleToString(article, keymap):
+    return json.dumps(articleToObject(article, keymap), ensure_ascii=False)
 
 def genFrontendTab(filename):
     initials_tab = ['b', 'p', 'm', 'f', 'd', 't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'z', 'c', 's', 'r', 'zh', 'ch', 'sh', 'y', 'w']
@@ -97,11 +137,11 @@ def genFrontendTab(filename):
                     key_tab[project]['key_map'][key][1].append(ch)
                 str_tab[project][ch] = key
         key_tab[project]['0'] = cfg[project]['0']
-    file = open(keytab_path, 'w', encoding='utf8')
+    file = open(config.getKeytab(), 'w', encoding='utf8')
     file.write(json.dumps(key_tab, ensure_ascii=False))
     file.write('\n')
     file.close()
-    file = open(strtab_path, 'w', encoding='utf8')
+    file = open(config.getStrtab(), 'w', encoding='utf8')
     file.write(json.dumps(str_tab, ensure_ascii=False))
     file.write('\n')
     file.close()
@@ -113,7 +153,7 @@ if __name__ == '__main__':
         exit(-1)
 
     if argv[1] == 'reverse':
-        genFrontendTab(config_path)
+        genFrontendTab(config.getConfig())
         exit(0)
     elif argv[1] == 'help':
         printHelp()
@@ -140,12 +180,10 @@ if __name__ == '__main__':
 
     if len(argv) >= 4:
         project = argv[3]
-    file = open(strtab_path, 'r', encoding='utf8')
-    keymap = json.loads(file.read())
-    file.close()
-    if not project in keymap:
+    keymap = getKeymap(project)
+    if keymap == None:
         print('error')
         exit(-1)
 
-    genData(article, keymap[project])
+    print(articleToString(article, keymap))
     exit(0)
