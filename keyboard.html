@@ -7,7 +7,7 @@
     <title>Document</title>
     <style>
         .tip-keyboard {
-            width: 780px;
+            width: 820px;
             border: 3px solid green;
             border-radius: 6px;
         }
@@ -54,73 +54,114 @@
             right: 6px;
             top: 3px;
         }
+
+        .kb-ym-list {
+            position: absolute;
+            right: 6px;
+            top: 22px;
+        }
+
+        .kb-ym-code {
+            text-align: right;
+            color: blue;
+            font-size: 13px;
+            line-height: 16px;            
+        }
     </style>
 </head>
 <body>
 
 
     <script>
-    // 微软双拼方案键位
-    var msKeyMap = {
-        "key_map": {
-            "q": ["q", "iu"],
-            "w": ["w", "ia", "ua"],
-            "e": ["e"],
-            "r": ["r", "uan", "er"],
-            "t": ["t", "ve"],
-            "y": ["y", "uai", "v"],
-            "u": ["sh", "u"],
-            "i": ["ch", "i"],
-            "o": ["o", "uo"],
-            "p": ["p", "un"],
-            "a": ["a"],
-            "s": ["s", "ong", "iong"],
-            "d": ["d", "uang", "iang"],
-            "f": ["f", "en"],
-            "g": ["g", "eng"],
-            "h": ["h", "ang"],
-            "j": ["j", "an"],
-            "k": ["k", "ao"],
-            "l": ["l", "ai"],
-            ";": ["ing"],
-            "z": ["z", "ei"],
-            "x": ["x", "ie"],
-            "c": ["c", "iao"],
-            "v": ["zh", "ui", "ve"],
-            "b": ["b", "ou"],
-            "n": ["n", "in"],
-            "m": ["m", "ian"]
+    // 双拼方案键位
+    var shuangpinKeyMap = {
+        "微软双拼": {
+            "key_map": {
+                "q": ["q", ["iu"]],
+                "w": ["w", ["ia", "ua"]],
+                "e": [null, ["e"]],
+                "r": ["r", ["uan", "er"]],
+                "t": ["t", ["ue"]],
+                "y": ["y", ["uai", "v"]],
+                "u": ["sh", ["u"]],
+                "i": ["ch", ["i"]],
+                "o": [null, ["o", "uo"]],
+                "p": ["p", ["un"]],
+                "a": [null, ["a"]],
+                "s": ["s", ["ong", "iong"]],
+                "d": ["d", ["iang", "uang"]],
+                "f": ["f", ["en"]],
+                "g": ["g", ["eng"]],
+                "h": ["h", ["ang"]],
+                "j": ["j", ["an"]],
+                "k": ["k", ["ao"]],
+                "l": ["l", ["ai"]],
+                ";": [null, ["ing"]],
+                "z": ["z", ["ei"]],
+                "x": ["x", ["ie"]],
+                "c": ["c", ["iao"]],
+                "v": ["zh", ["ve", "ui"]],
+                "b": ["b", ["ou"]],
+                "n": ["n", ["in"]],
+                "m": ["m", ["ian"]]
+            },
+            "0": "o"
         },
-        "0": "o"    // 双拼零声母
-    }
+        "小鹤双拼": {
+            "key_map": {
+                "q": ["q", ["iu"]],
+                "w": ["w", ["ei"]],
+                "e": [null, ["e"]],
+                "r": ["r", ["uan", "van"]],
+                "t": ["t", ["ve", "ue"]],
+                "y": ["y", ["vn", "un"]],
+                "u": ["sh", ["u"]],
+                "i": ["ch", ["i"]],
+                "o": [null, ["o", "uo"]],
+                "p": ["p", ["ie"]],
+                "a": [null, ["a"]],
+                "s": ["s", ["ong", "iong"]],
+                "d": ["d", ["ai"]],
+                "f": ["f", ["en"]],
+                "g": ["g", ["eng"]],
+                "h": ["h", ["ang"]],
+                "j": ["j", ["an"]],
+                "k": ["k", ["uai", "ing"]],
+                "l": ["l", ["iang", "uang"]],
+                ";": [null, []],
+                "z": ["z", ["ou"]],
+                "x": ["x", ["ia", "ua"]],
+                "c": ["c", ["ao"]],
+                "v": ["zh", ["ui", "v"]],
+                "b": ["b", ["in"]],
+                "n": ["n", ["iao"]],
+                "m": ["m", ["ian"]]
+            },
+            "0": 2
+        }
+    };
 
-    var kbRows = [
+    var kbLayout = [
         ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
         ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';'],
         ['z', 'x', 'c', 'v', 'b', 'n', 'm']
     ];
 
 
-    // 查找一个键盘按键在msKeyMap里对应的声母
-    var findShengmu = key => {
-        var shengmuList = {'b': 'b', 'p': 'p', 'm': 'm', 'f': 'f', 'd': 'd', 't': 't', 'n': 'n', 'l': 'l', 'g': 'g', 'k': 'k', 'h': 'h', 'j': 'j', 'q': 'q', 'x': 'x', 'zh': 'zh', 'ch': 'ch', 'sh': 'sh', 'r': 'r', 'z': 'z', 'c': 'c', 's': 's', 'y': 'y', 'w': 'w'};
-
-        for(let val of msKeyMap.key_map[key]) {
-            if(val in shengmuList) return val;
-
-            return '';
-        }
-    }
-
     var html = '';
     html += '<article class="tip-keyboard">';
-    for(let kbRow of kbRows) {
+    for(let kbRow of kbLayout) {
         html += '<div class="kb-row">';
         for(let key of kbRow) {
-            html += `<div class="kb-key" data-key="${key}">`;
-                html += `<span class="kb-key-code">${key.toUpperCase()}</span>`
-                html += `<span class="kb-sm-code">${findShengmu(key)}</span>`
-            html += '</div>';
+            html += `
+                <div class="kb-key" data-key="${key}">
+                    <span class="kb-key-code">${key.toUpperCase()}</span>
+                    <span class="kb-sm-code">${shuangpinKeyMap['小鹤双拼']['key_map'][key][0] || ''}</span>
+                    <div class="kb-ym-list">
+                        ${shuangpinKeyMap['小鹤双拼']['key_map'][key][1].map(ym => '<div class="kb-ym-code" data-ym=' + ym + '>' + ym + '</div>').join('')}
+                    </div>
+                </div>
+            `;
         }
         html += '</div>';
     }
