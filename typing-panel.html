@@ -87,68 +87,106 @@
         </div>
     </article>
 
+    <script src="shuangpinKeyMap.js"></script>
+
     <script>
         
-        // 零声母拼音转换为双拼形式
-        function lingshengmuToShuangping(val ,type) {
-            var vals = ['a', 'an', 'ai', 'ao', 'ang', 'e', 'en', 'ei', 'er', 'eng', 'o', 'ou'];
-            if(vals.includes(val) === false) throw new Error();
-            switch(type) {
-                case '微软':
-                    return ['o', val];
-                case '小鹤':
-                    if(val.length === 2)
-                        return [val[0], val[1]];
-                    else
-                        return [val[0], val];
-                default:
-                    throw new Error();
-            }
-        }
     var article = [
         {
             "word": "偶",
-            "desc": ["", "ǒu"],
-            "keys": ["o", "u"]        // 小鹤["o", "u"] 微软["o", "b"]
+            "desc": ["ǒu"],
+            "dmap": ["ou"]
         },
         {
             "word": "昂",
-            "desc": ["", "áng"],
-            "keys": ["a", "h"]        // 小鹤["a", "h"] 微软["o", "h"]
+            "desc": ["áng"],
+            "dmap": ["ang"]
         },
         {
             "word": "天",
             "desc": ["t", "iān"],
-            "keys": ["t", "m"]
+            "dmap": ["t", "ian"]
         },
         {
             "word": "只",
             "desc": ["zh", "ǐ"],
-            "keys": ["v", "i"]
+            "dmap": ["zh", "i"]
         },
         {
             "word": "啊",
-            "desc": ["", "a"],
-            "keys": ["a", "a"]        // 小鹤["a", "a"] 微软["o", "a"]
+            "desc": ["a"],
+            "dmap": ["a"]
         },
         {
             "word": "！"
         }
     ];
 
+        // 零声母拼音转换为双拼形式
+    function lingshengmuToShuangping(val ,type) {
+        var vals = ['a', 'an', 'ai', 'ao', 'ang', 'e', 'en', 'ei', 'er', 'eng', 'o', 'ou'];
+        if(vals.includes(val) === false) throw new Error();
+        switch(type) {
+            case 1:
+                return [val[0], val];
+            case 2:
+                if(val.length === 2)
+                    return [val[0], val[1]];
+                else
+                    return [val[0], val];
+            default:
+                if(typeof type === 'string' && type.length === 1)
+                    return [type, val];
+                else
+                    throw new Error();
+        }
+    }
+
+    function reverseShuangpinKeyMap(keyMap) {
+        var rv = {};
+        for(let key in keyMap) {
+            if(keyMap.hasOwnProperty(key)) {
+                let val = keyMap[key];
+
+                // 声母
+                if(val[0]) {
+                    rv[val[0]] = key;
+                }
+
+                // 韵母
+                for(let ym of val[1]) {
+                    rv[ym] = key;
+                }
+            }
+        }
+
+        return rv;
+    }
+    
+    var rvKeyMap = reverseShuangpinKeyMap(shuangpinKeyMap['小鹤双拼']['key_map']);
     var html = '';
     html += '<article class="typing-panel">';
-    for(let word of article) {
+    for(let wordInfo of article) {
+        let{word, desc, dmap} = wordInfo;
+
+        if(!(desc === undefined && dmap === undefined || desc.length === dmap.length)) throw new Error();
+
+        if(desc && desc.length === 1) {
+            // 扩展零声母拼音数组
+            desc = ['', ...desc];
+            dmap = lingshengmuToShuangping(dmap[0], shuangpinKeyMap['小鹤双拼']['0']);
+        }
+        
         html += `
-        <div class="${word.desc ? 'tp-word-box' : 'tp-symbol-box'}">
+        <div class="${desc ? 'tp-word-box' : 'tp-symbol-box'}">
             <div class="tp-pinyin">
-                <span class="tp-sm">${word.desc ? word.desc[0] : ''}</span>
-                <span class="tp-ym">${word.desc ? word.desc[1] : ''}</span>
+                <span class="tp-sm">${desc ? desc[0] : ''}</span>
+                <span class="tp-ym">${desc ? desc[1] : ''}</span>
             </div>
-            <div class="tp-word">${word.word}</div>
+            <div class="tp-word">${word}</div>
             <div class="tp-keys">
-                <span class="tp-sm">${word.keys ? word.keys[0] : ''}</span>
-                <span class="tp-ym">${word.keys ? word.keys[1] : ''}</span>
+                <span class="tp-sm">${dmap ? rvKeyMap[dmap[0]] : ''}</span>
+                <span class="tp-ym">${dmap ? rvKeyMap[dmap[1]] : ''}</span>
             </div>
         </div>
         `;
