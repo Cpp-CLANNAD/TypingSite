@@ -74,7 +74,7 @@ def genData(data, keymap):
             tmp['desc'] = tone[i]
             tmp['dmap'] = keys[i]
         rlt.append(tmp)
-    print(rlt)
+    print(json.dumps(rlt, ensure_ascii=False))
 
 def genFrontendTab(filename):
     initials_tab = ['b', 'p', 'm', 'f', 'd', 't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'z', 'c', 's', 'r', 'zh', 'ch', 'sh', 'y', 'w']
@@ -85,24 +85,24 @@ def genFrontendTab(filename):
     key_tab = {}
     str_tab = {}
     for project in cfg:
-        key_tab[project] = {}
+        key_tab[project] = {'key_map': {}}
         str_tab[project] = {}
         keymap = cfg[project]['keymap']
         for key in keymap:
-            key_tab[project][key] = [None, []]
+            key_tab[project]['key_map'][key] = [None, []]
             for ch in keymap[key]:
                 if ch in initials_tab:
-                    key_tab[project][key][0] = ch
+                    key_tab[project]['key_map'][key][0] = ch
                 else:
-                    key_tab[project][key][1].append(ch)
+                    key_tab[project]['key_map'][key][1].append(ch)
                 str_tab[project][ch] = key
         key_tab[project]['0'] = cfg[project]['0']
     file = open(keytab_path, 'w', encoding='utf8')
-    file.write(json.dumps(key_tab))
+    file.write(json.dumps(key_tab, ensure_ascii=False))
     file.write('\n')
     file.close()
     file = open(strtab_path, 'w', encoding='utf8')
-    file.write(json.dumps(str_tab))
+    file.write(json.dumps(str_tab, ensure_ascii=False))
     file.write('\n')
     file.close()
 
