@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .tip-keyboard {
+            width: 780px;
+            border: 3px solid green;
+            border-radius: 6px;
+        }
+
+        .kb-row {
+            height: 70px;
+        }
+
+        .kb-row:nth-of-type(1) {
+            padding-left: 40px;
+        }
+        .kb-row:nth-of-type(2) {
+            padding-left: 55px;
+        }
+        .kb-row:nth-of-type(3) {
+            padding-left: 90px;
+        }
+
+        .kb-key {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            border: 2px solid green;
+            border-radius: 4px;
+            margin: 2px 2px;
+            position: relative;
+        }
+
+        .kb-key.active {
+            background: pink;
+        }
+
+        .kb-key-code {
+            font-weight: bold;
+            position: absolute;
+            top: 2px;
+            left: 6px;
+        }
+
+        .kb-sm-code {
+            font-size: 13px;
+            color: red;
+            position: absolute;
+            right: 6px;
+            top: 3px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <script>
+    // 微软双拼方案键位
+    var msKeyMap = {
+        "key_map": {
+            "q": ["q", "iu"],
+            "w": ["w", "ia", "ua"],
+            "e": ["e"],
+            "r": ["r", "uan", "er"],
+            "t": ["t", "ve"],
+            "y": ["y", "uai", "v"],
+            "u": ["sh", "u"],
+            "i": ["ch", "i"],
+            "o": ["o", "uo"],
+            "p": ["p", "un"],
+            "a": ["a"],
+            "s": ["s", "ong", "iong"],
+            "d": ["d", "uang", "iang"],
+            "f": ["f", "en"],
+            "g": ["g", "eng"],
+            "h": ["h", "ang"],
+            "j": ["j", "an"],
+            "k": ["k", "ao"],
+            "l": ["l", "ai"],
+            ";": ["ing"],
+            "z": ["z", "ei"],
+            "x": ["x", "ie"],
+            "c": ["c", "iao"],
+            "v": ["zh", "ui", "ve"],
+            "b": ["b", "ou"],
+            "n": ["n", "in"],
+            "m": ["m", "ian"]
+        },
+        "0": "o"    // 双拼零声母
+    }
+
+    var kbRows = [
+        ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+        ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';'],
+        ['z', 'x', 'c', 'v', 'b', 'n', 'm']
+    ];
+
+
+    // 查找一个键盘按键在msKeyMap里对应的声母
+    var findShengmu = key => {
+        var shengmuList = {'b': 'b', 'p': 'p', 'm': 'm', 'f': 'f', 'd': 'd', 't': 't', 'n': 'n', 'l': 'l', 'g': 'g', 'k': 'k', 'h': 'h', 'j': 'j', 'q': 'q', 'x': 'x', 'zh': 'zh', 'ch': 'ch', 'sh': 'sh', 'r': 'r', 'z': 'z', 'c': 'c', 's': 's', 'y': 'y', 'w': 'w'};
+
+        for(let val of msKeyMap.key_map[key]) {
+            if(val in shengmuList) return val;
+
+            return '';
+        }
+    }
+
+    var html = '';
+    html += '<article class="tip-keyboard">';
+    for(let kbRow of kbRows) {
+        html += '<div class="kb-row">';
+        for(let key of kbRow) {
+            html += `<div class="kb-key" data-key="${key}">`;
+                html += `<span class="kb-key-code">${key.toUpperCase()}</span>`
+                html += `<span class="kb-sm-code">${findShengmu(key)}</span>`
+            html += '</div>';
+        }
+        html += '</div>';
+    }
+    html += '</article>';
+
+    document.body.innerHTML = html;
+
+
+
+    class TipKeyboard {
+        constructor() {
+            this.el = document.querySelector('.tip-keyboard');
+        }
+
+        highlightKey(key) {
+            var target = this.el.querySelector(`[data-key=${key}]`);
+            if(target) {
+                target.classList.add('active');
+            }
+        }
+
+        unhighlightKey(key) {
+            var target = this.el.querySelector(`[data-key=${key}]`);
+            if(target) {
+                target.classList.remove('active');
+            }
+        }
+
+    }
+
+    tpk = new TipKeyboard();
+
+    </script>
+</body>
+</html>

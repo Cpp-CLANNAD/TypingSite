@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .typing-panel {
+            width: 780px;
+            border: 3px solid green;
+            border-radius: 6px;
+            overflow: hidden;
+            padding: 5px;
+        }
+
+        .tp-word-box,
+        .tp-symbol-box {
+            border: 2px solid green;
+            border-radius: 4px;
+            width: 60px;
+            float: left;
+            margin: 0 5px;
+        }
+
+        .tp-pinyin {
+            height: 22px;
+            line-height: 22px;
+            text-align: center;
+        }
+
+        .tp-pinyin > .tp-sm {
+            color: red;
+        }
+
+        .tp-pinyin > .tp-ym {
+            color: green;
+        }
+
+        .tp-word {
+            line-height: 55px;
+            font-size: 26px;
+            font-weight: normal;
+            text-align: center;
+        }
+
+        .tp-keys {
+            height: 22px;
+            line-height: 22px;
+            text-align: center;
+        }
+
+        .tp-word-box.over .tp-word {
+            color: green;
+        }
+
+        .tp-word-box.over + .tp-symbol-box {
+            color: green;
+        }
+
+        .hidden-over.typing-panel .tp-word-box.over,
+        .hidden-over.typing-panel .tp-word-box.over + .tp-symbol-box {
+            display: none;
+        }
+
+        .no-pinyin.typing-panel .tp-pinyin {
+            display: none;
+        }
+
+        .no-shuangpin.typing-panel .tp-keys {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <article class="typing-panel">
+        <div class="tp-word-box">
+            <div class="tp-pinyin">
+                <span class="tp-sm"></span>
+                <span class="tp-ym"></span>
+            </div>
+            <div class="tp-word"></div>
+            <div class="tp-keys">
+                <span class="tp-sm"></span>
+                <span class="tp-ym"></span>
+            </div>
+        </div>
+    </article>
+
+    <script>
+        
+        // 零声母拼音转换为双拼形式
+        function lingshengmuToShuangping(val ,type) {
+            var vals = ['a', 'an', 'ai', 'ao', 'ang', 'e', 'en', 'ei', 'er', 'eng', 'o', 'ou'];
+            if(vals.includes(val) === false) throw new Error();
+            switch(type) {
+                case '微软':
+                    return ['o', val];
+                case '小鹤':
+                    if(val.length === 2)
+                        return [val[0], val[1]];
+                    else
+                        return [val[0], val];
+                default:
+                    throw new Error();
+            }
+        }
+    var article = [
+        {
+            "word": "偶",
+            "desc": ["", "ǒu"],
+            "keys": ["o", "u"]        // 小鹤["o", "u"] 微软["o", "b"]
+        },
+        {
+            "word": "昂",
+            "desc": ["", "áng"],
+            "keys": ["a", "h"]        // 小鹤["a", "h"] 微软["o", "h"]
+        },
+        {
+            "word": "天",
+            "desc": ["t", "iān"],
+            "keys": ["t", "m"]
+        },
+        {
+            "word": "只",
+            "desc": ["zh", "ǐ"],
+            "keys": ["v", "i"]
+        },
+        {
+            "word": "啊",
+            "desc": ["", "a"],
+            "keys": ["a", "a"]        // 小鹤["a", "a"] 微软["o", "a"]
+        },
+        {
+            "word": "！"
+        }
+    ];
+
+    var html = '';
+    html += '<article class="typing-panel">';
+    for(let word of article) {
+        html += `
+        <div class="${word.desc ? 'tp-word-box' : 'tp-symbol-box'}">
+            <div class="tp-pinyin">
+                <span class="tp-sm">${word.desc ? word.desc[0] : ''}</span>
+                <span class="tp-ym">${word.desc ? word.desc[1] : ''}</span>
+            </div>
+            <div class="tp-word">${word.word}</div>
+            <div class="tp-keys">
+                <span class="tp-sm">${word.keys ? word.keys[0] : ''}</span>
+                <span class="tp-ym">${word.keys ? word.keys[1] : ''}</span>
+            </div>
+        </div>
+        `;
+    }
+    html += '</article>';
+
+    document.body.innerHTML = html;
+
+    var words = document.querySelectorAll('.typing-panel > .tp-word-box');
+
+    class TypingPanel {
+        constructor() {
+            this.el = document.querySelector('.typing-panel');
+            this.words = words;
+        }
+
+        nextStep() {
+            
+        }
+    }
+    </script>
+</body>
+</html>
