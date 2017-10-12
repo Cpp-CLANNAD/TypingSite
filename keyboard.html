@@ -55,6 +55,10 @@
             top: 3px;
         }
 
+        .kb-sm-code.active {
+            text-decoration: underline;
+        }
+
         .kb-ym-list {
             position: absolute;
             right: 6px;
@@ -67,79 +71,16 @@
             font-size: 13px;
             line-height: 16px;            
         }
+        .kb-ym-code.active {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
-
+    <script src="shuangpinKeyMap.js"></script>
+    
     <script>
-    // 双拼方案键位
-    var shuangpinKeyMap = {
-        "微软双拼": {
-            "key_map": {
-                "q": ["q", ["iu"]],
-                "w": ["w", ["ia", "ua"]],
-                "e": [null, ["e"]],
-                "r": ["r", ["uan", "er"]],
-                "t": ["t", ["ue"]],
-                "y": ["y", ["uai", "v"]],
-                "u": ["sh", ["u"]],
-                "i": ["ch", ["i"]],
-                "o": [null, ["o", "uo"]],
-                "p": ["p", ["un"]],
-                "a": [null, ["a"]],
-                "s": ["s", ["ong", "iong"]],
-                "d": ["d", ["iang", "uang"]],
-                "f": ["f", ["en"]],
-                "g": ["g", ["eng"]],
-                "h": ["h", ["ang"]],
-                "j": ["j", ["an"]],
-                "k": ["k", ["ao"]],
-                "l": ["l", ["ai"]],
-                ";": [null, ["ing"]],
-                "z": ["z", ["ei"]],
-                "x": ["x", ["ie"]],
-                "c": ["c", ["iao"]],
-                "v": ["zh", ["ve", "ui"]],
-                "b": ["b", ["ou"]],
-                "n": ["n", ["in"]],
-                "m": ["m", ["ian"]]
-            },
-            "0": "o"
-        },
-        "小鹤双拼": {
-            "key_map": {
-                "q": ["q", ["iu"]],
-                "w": ["w", ["ei"]],
-                "e": [null, ["e"]],
-                "r": ["r", ["uan", "van"]],
-                "t": ["t", ["ve", "ue"]],
-                "y": ["y", ["vn", "un"]],
-                "u": ["sh", ["u"]],
-                "i": ["ch", ["i"]],
-                "o": [null, ["o", "uo"]],
-                "p": ["p", ["ie"]],
-                "a": [null, ["a"]],
-                "s": ["s", ["ong", "iong"]],
-                "d": ["d", ["ai"]],
-                "f": ["f", ["en"]],
-                "g": ["g", ["eng"]],
-                "h": ["h", ["ang"]],
-                "j": ["j", ["an"]],
-                "k": ["k", ["uai", "ing"]],
-                "l": ["l", ["iang", "uang"]],
-                ";": [null, []],
-                "z": ["z", ["ou"]],
-                "x": ["x", ["ia", "ua"]],
-                "c": ["c", ["ao"]],
-                "v": ["zh", ["ui", "v"]],
-                "b": ["b", ["in"]],
-                "n": ["n", ["iao"]],
-                "m": ["m", ["ian"]]
-            },
-            "0": 2
-        }
-    };
 
     var kbLayout = [
         ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
@@ -156,7 +97,7 @@
             html += `
                 <div class="kb-key" data-key="${key}">
                     <span class="kb-key-code">${key.toUpperCase()}</span>
-                    <span class="kb-sm-code">${shuangpinKeyMap['小鹤双拼']['key_map'][key][0] || ''}</span>
+                    <span class="kb-sm-code" data-sm="${shuangpinKeyMap['小鹤双拼']['key_map'][key][0] || ''}">${shuangpinKeyMap['小鹤双拼']['key_map'][key][0] || ''}</span>
                     <div class="kb-ym-list">
                         ${shuangpinKeyMap['小鹤双拼']['key_map'][key][1].map(ym => '<div class="kb-ym-code" data-ym=' + ym + '>' + ym + '</div>').join('')}
                     </div>
@@ -190,6 +131,33 @@
             }
         }
 
+        highlightShengmu(shengmu) {
+            var target = this.el.querySelector(`[data-sm=${shengmu}]`);
+            if(target) {
+                target.classList.add('active');
+            }
+        }
+
+        unhighlightShengmu(shengmu) {
+            var target = this.el.querySelector(`[data-sm=${shengmu}]`);
+            if(target) {
+                target.classList.remove('active');
+            }
+        }
+
+        highlightYunmu(yunmu) {
+            var target = this.el.querySelector(`[data-ym=${yunmu}]`);
+            if(target) {
+                target.classList.add('active');
+            }
+        }
+
+        unhighlightYunmu(yunmu) {
+            var target = this.el.querySelector(`[data-ym=${yunmu}]`);
+            if(target) {
+                target.classList.remove('active');
+            }
+        }
     }
 
     tpk = new TipKeyboard();
