@@ -1,0 +1,442 @@
+2017-10-12 16:24:03,692 DEBUG django.db.backends 6048 - (0.002) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:24:03,694 DEBUG django.db.backends 6048 - (0.000) PRAGMA foreign_keys; args=None
+2017-10-12 16:24:03,694 DEBUG django.db.backends 6048 - (0.000) PRAGMA foreign_keys = 0; args=None
+2017-10-12 16:24:03,694 DEBUG django.db.backends 6048 - (0.000) BEGIN; args=None
+2017-10-12 16:24:03,694 DEBUG django.db.backends.schema 6048 - CREATE TABLE "django_migrations" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "app" varchar(255) NOT NULL, "name" varchar(255) NOT NULL, "applied" datetime NOT NULL); (params None)
+2017-10-12 16:24:03,695 DEBUG django.db.backends 6048 - (0.000) CREATE TABLE "django_migrations" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "app" varchar(255) NOT NULL, "name" varchar(255) NOT NULL, "applied" datetime NOT NULL); args=None
+2017-10-12 16:24:03,835 DEBUG django.db.backends 6048 - (0.000) PRAGMA foreign_keys = 0; args=None
+2017-10-12 16:24:03,861 DEBUG django.db.backends 6048 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:25:03,684 DEBUG django.db.backends 14084 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:25:03,686 DEBUG django.db.backends 14084 - (0.001) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:25:26,099 DEBUG django.db.backends 15600 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:25:26,102 DEBUG django.db.backends 15600 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:25:39,356 DEBUG django.template 9448 - Exception while resolving variable 'name' in template 'unknown'.
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 172, in _get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\urls\resolvers.py", line 392, in resolve
+    raise Resolver404({'tried': tried, 'path': new_path})
+django.urls.exceptions.Resolver404: {'tried': [[<RegexURLResolver <module 'main.urls' from 'D:\\Code\\working\\TypingSite\\backend\\server\\main\\urls.py'> (None:None) ^api/>]], 'path': ''}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\template\base.py", line 882, in _resolve_lookup
+    current = current[bit]
+TypeError: 'RegexURLResolver' object is not subscriptable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\template\base.py", line 890, in _resolve_lookup
+    current = getattr(current, bit)
+AttributeError: 'RegexURLResolver' object has no attribute 'name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\template\base.py", line 896, in _resolve_lookup
+    current = current[int(bit)]
+ValueError: invalid literal for int() with base 10: 'name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\template\base.py", line 903, in _resolve_lookup
+    (bit, current))  # missing attribute
+django.template.base.VariableDoesNotExist: Failed lookup for key [name] in "<RegexURLResolver <module 'main.urls' from 'D:\\\\Code\\\\working\\\\TypingSite\\\\backend\\\\server\\\\main\\\\urls.py'> (None:None) ^api/>"
+2017-10-12 16:25:39,375 WARNING django.request 9448 - Not Found: /
+2017-10-12 16:25:39,376 WARNING django.server 9448 - "GET / HTTP/1.1" 404 1909
+2017-10-12 16:25:44,363 DEBUG django.template 5260 - Exception while resolving variable 'name' in template 'unknown'.
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 172, in _get_response
+    resolver_match = resolver.resolve(request.path_info)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\urls\resolvers.py", line 392, in resolve
+    raise Resolver404({'tried': tried, 'path': new_path})
+django.urls.exceptions.Resolver404: {'tried': [[<RegexURLResolver <module 'main.urls' from 'D:\\Code\\working\\TypingSite\\backend\\server\\main\\urls.py'> (None:None) ^api/>]], 'path': ''}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\template\base.py", line 882, in _resolve_lookup
+    current = current[bit]
+TypeError: 'RegexURLResolver' object is not subscriptable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\template\base.py", line 890, in _resolve_lookup
+    current = getattr(current, bit)
+AttributeError: 'RegexURLResolver' object has no attribute 'name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\template\base.py", line 896, in _resolve_lookup
+    current = current[int(bit)]
+ValueError: invalid literal for int() with base 10: 'name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\template\base.py", line 903, in _resolve_lookup
+    (bit, current))  # missing attribute
+django.template.base.VariableDoesNotExist: Failed lookup for key [name] in "<RegexURLResolver <module 'main.urls' from 'D:\\\\Code\\\\working\\\\TypingSite\\\\backend\\\\server\\\\main\\\\urls.py'> (None:None) ^api/>"
+2017-10-12 16:25:44,364 WARNING django.request 5260 - Not Found: /
+2017-10-12 16:25:44,365 WARNING django.server 5260 - "POST / HTTP/1.1" 404 1910
+2017-10-12 16:26:00,251 ERROR django.request 12824 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 6, in translateArticle
+    ret = pycv.genData(request.body.decode('utf-8'), pycv.getKeymap(u'Î¢ÈíË«Æ´'))
+  File "D:\Code\working\TypingSite\backend\server\tools\convert.py", line 32, in genData
+    lhTone = py(article, style=ST.INITIALS)
+NameError: name 'article' is not defined
+2017-10-12 16:26:02,150 ERROR django.server 12824 - "GET /api/translate HTTP/1.1" 500 77150
+2017-10-12 16:26:15,150 WARNING django.security.csrf 15260 - Forbidden (CSRF cookie not set.): /api/translate
+2017-10-12 16:26:15,217 WARNING django.server 15260 - "POST /api/translate HTTP/1.1" 403 2857
+2017-10-12 16:26:26,368 ERROR django.request 14456 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 6, in translateArticle
+    ret = pycv.genData(request.body.decode('utf-8'), pycv.getKeymap(u'Î¢ÈíË«Æ´'))
+  File "D:\Code\working\TypingSite\backend\server\tools\convert.py", line 32, in genData
+    lhTone = py(article, style=ST.INITIALS)
+NameError: name 'article' is not defined
+2017-10-12 16:26:26,405 ERROR django.server 14456 - "GET /api/translate HTTP/1.1" 500 77150
+2017-10-12 16:26:37,320 DEBUG django.db.backends 8188 - (0.000) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:26:37,323 DEBUG django.db.backends 8188 - (0.001) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:26:39,933 ERROR django.request 13416 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 6, in translateArticle
+    ret = pycv.genData(request.body.decode('utf-8'), pycv.getKeymap(u'Î¢ÈíË«Æ´'))
+  File "D:\Code\working\TypingSite\backend\server\tools\convert.py", line 32, in genData
+    lhTone = py(article, style=ST.INITIALS)
+NameError: name 'article' is not defined
+2017-10-12 16:26:40,021 ERROR django.server 13416 - "POST /api/translate HTTP/1.1" 500 76622
+2017-10-12 16:27:01,164 ERROR django.request 13860 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 6, in translateArticle
+    ret = pycv.genData(request.body.decode('utf-8'), pycv.getKeymap(u'Î¢ÈíË«Æ´'))
+  File "D:\Code\working\TypingSite\backend\server\tools\convert.py", line 32, in genData
+    lhTone = py(article, style=ST.INITIALS)
+NameError: name 'article' is not defined
+2017-10-12 16:27:01,214 ERROR django.server 13860 - "POST /api/translate HTTP/1.1" 500 76667
+2017-10-12 16:27:18,995 DEBUG django.db.backends 9640 - (0.000) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:27:18,997 DEBUG django.db.backends 9640 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:27:21,218 ERROR django.request 15972 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 6, in translateArticle
+    ret = pycv.genData(request.body.decode('utf8'), pycv.getKeymap(u'Î¢ÈíË«Æ´'))
+  File "D:\Code\working\TypingSite\backend\server\tools\convert.py", line 32, in genData
+    lhTone = py(article, style=ST.INITIALS)
+NameError: name 'article' is not defined
+2017-10-12 16:27:21,314 ERROR django.server 15972 - "POST /api/translate HTTP/1.1" 500 76665
+2017-10-12 16:27:36,545 DEBUG django.db.backends 10680 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:27:36,546 DEBUG django.db.backends 10680 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:27:37,857 ERROR django.request 7776 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 7, in translateArticle
+    ret = pycv.genData(request.body.decode('utf8'), pycv.getKeymap(u'Î¢ÈíË«Æ´'))
+  File "D:\Code\working\TypingSite\backend\server\tools\convert.py", line 32, in genData
+    lhTone = py(article, style=ST.INITIALS)
+NameError: name 'article' is not defined
+2017-10-12 16:27:37,944 ERROR django.server 7776 - "POST /api/translate HTTP/1.1" 500 76802
+2017-10-12 16:27:52,027 DEBUG django.db.backends 10968 - (0.000) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:27:52,029 DEBUG django.db.backends 10968 - (0.001) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:27:53,833 ERROR django.request 11628 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 7, in translateArticle
+    ret = pycv.genData(request.body.decode('utf8'), pycv.getKeymap(u'Î¢ÈíË«Æ´'))
+  File "D:\Code\working\TypingSite\backend\server\tools\convert.py", line 32, in genData
+    lhTone = py(article, style=ST.INITIALS)
+NameError: name 'article' is not defined
+2017-10-12 16:27:53,922 ERROR django.server 11628 - "POST /api/translate HTTP/1.1" 500 76825
+2017-10-12 16:28:24,248 ERROR django.request 8080 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 7, in translateArticle
+    ret = pycv.genData(request.body.decode('utf8'), pycv.getKeymap(u'Î¢ÈíË«Æ´'))
+  File "D:\Code\working\TypingSite\backend\server\tools\convert.py", line 32, in genData
+    lhTone = py(article, style=ST.INITIALS)
+NameError: name 'article' is not defined
+2017-10-12 16:28:24,283 ERROR django.server 8080 - "POST /api/translate HTTP/1.1" 500 76825
+2017-10-12 16:28:33,464 DEBUG django.db.backends 19192 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:28:33,466 DEBUG django.db.backends 19192 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:28:35,041 ERROR django.request 6352 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 7, in translateArticle
+    ret = pycv.genData(request.body.decode('utf8'), pycv.getKeymap(u'Î¢ÈíË«Æ´'))
+  File "D:\Code\working\TypingSite\backend\server\tools\convert.py", line 32, in genData
+    lhTone = py(article, style=ST.INITIALS)
+NameError: name 'article' is not defined
+2017-10-12 16:28:35,952 ERROR django.server 6352 - "POST /api/translate HTTP/1.1" 500 76825
+2017-10-12 16:29:28,198 DEBUG django.db.backends 19164 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:29:28,200 DEBUG django.db.backends 19164 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:29:31,855 DEBUG jieba 3636 - Building prefix dict from D:\Develop\Python\Python36\lib\site-packages\jieba\dict.txt ...
+2017-10-12 16:29:31,872 DEBUG jieba 3636 - Loading model from cache C:\Users\ifgame\AppData\Local\Temp\jieba.cache
+2017-10-12 16:29:32,977 DEBUG jieba 3636 - Loading model cost 1.121293306350708 seconds.
+2017-10-12 16:29:32,977 DEBUG jieba 3636 - Prefix dict has been built succesfully.
+2017-10-12 16:29:33,011 ERROR django.request 3636 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 8, in translateArticle
+    return HttpRequest(ret)
+NameError: name 'HttpRequest' is not defined
+2017-10-12 16:29:34,055 ERROR django.server 3636 - "POST /api/translate HTTP/1.1" 500 72624
+2017-10-12 16:31:30,585 DEBUG django.db.backends 10148 - (0.000) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:31:30,587 DEBUG django.db.backends 10148 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:31:33,365 DEBUG jieba 14760 - Building prefix dict from D:\Develop\Python\Python36\lib\site-packages\jieba\dict.txt ...
+2017-10-12 16:31:33,367 DEBUG jieba 14760 - Loading model from cache C:\Users\ifgame\AppData\Local\Temp\jieba.cache
+2017-10-12 16:31:34,414 DEBUG jieba 14760 - Loading model cost 1.0487470626831055 seconds.
+2017-10-12 16:31:34,415 DEBUG jieba 14760 - Prefix dict has been built succesfully.
+2017-10-12 16:31:34,416 ERROR django.request 14760 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 9, in translateArticle
+    return HttpRequest(ret)
+TypeError: __init__() takes 1 positional argument but 2 were given
+2017-10-12 16:31:35,500 ERROR django.server 14760 - "POST /api/translate HTTP/1.1" 500 72678
+2017-10-12 16:32:28,278 DEBUG django.db.backends 1252 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:32:28,279 DEBUG django.db.backends 1252 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:33:10,498 DEBUG jieba 5412 - Building prefix dict from D:\Develop\Python\Python36\lib\site-packages\jieba\dict.txt ...
+2017-10-12 16:33:10,500 DEBUG jieba 5412 - Loading model from cache C:\Users\ifgame\AppData\Local\Temp\jieba.cache
+2017-10-12 16:33:11,550 DEBUG jieba 5412 - Loading model cost 1.052751064300537 seconds.
+2017-10-12 16:33:11,551 DEBUG jieba 5412 - Prefix dict has been built succesfully.
+2017-10-12 16:33:11,553 INFO django.server 5412 - "POST /api/translate HTTP/1.1" 200 522
+2017-10-12 16:37:15,626 DEBUG django.db.backends 18984 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:37:15,628 DEBUG django.db.backends 18984 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:37:16,942 ERROR django.request 14760 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 8, in translateArticle
+    ret = pycv.articleToObject(request.body.decode('utf8'), pycv.getKeymap(u'Î¢ÈíË«Æ´'))
+AttributeError: module 'tools.convert' has no attribute 'articleToObject'
+2017-10-12 16:37:17,923 ERROR django.server 14760 - "POST /api/translate HTTP/1.1" 500 71730
+2017-10-12 16:37:58,367 DEBUG django.db.backends 10636 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:37:58,369 DEBUG django.db.backends 10636 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:38:01,035 DEBUG jieba 19328 - Building prefix dict from D:\Develop\Python\Python36\lib\site-packages\jieba\dict.txt ...
+2017-10-12 16:38:01,038 DEBUG jieba 19328 - Loading model from cache C:\Users\ifgame\AppData\Local\Temp\jieba.cache
+2017-10-12 16:38:02,104 DEBUG jieba 19328 - Loading model cost 1.0687620639801025 seconds.
+2017-10-12 16:38:02,105 DEBUG jieba 19328 - Prefix dict has been built succesfully.
+2017-10-12 16:38:02,106 ERROR django.request 19328 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 9, in translateArticle
+    return JsonResponse(ret)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\http\response.py", line 524, in __init__
+    'In order to allow non-dict objects to be serialized set the '
+TypeError: In order to allow non-dict objects to be serialized set the safe parameter to False.
+2017-10-12 16:38:03,017 ERROR django.server 19328 - "POST /api/translate HTTP/1.1" 500 78605
+2017-10-12 16:38:17,572 DEBUG django.db.backends 9632 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:38:17,574 DEBUG django.db.backends 9632 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:38:19,509 DEBUG jieba 5452 - Building prefix dict from D:\Develop\Python\Python36\lib\site-packages\jieba\dict.txt ...
+2017-10-12 16:38:19,511 DEBUG jieba 5452 - Loading model from cache C:\Users\ifgame\AppData\Local\Temp\jieba.cache
+2017-10-12 16:38:20,581 DEBUG jieba 5452 - Loading model cost 1.070763111114502 seconds.
+2017-10-12 16:38:20,581 DEBUG jieba 5452 - Prefix dict has been built succesfully.
+2017-10-12 16:38:20,583 ERROR django.request 5452 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 9, in translateArticle
+    return JsonResponse(ret)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\http\response.py", line 524, in __init__
+    'In order to allow non-dict objects to be serialized set the '
+TypeError: In order to allow non-dict objects to be serialized set the safe parameter to False.
+2017-10-12 16:38:20,700 ERROR django.server 5452 - "POST /api/translate HTTP/1.1" 500 79027
+2017-10-12 16:39:10,063 DEBUG django.db.backends 5680 - (0.000) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:39:10,065 DEBUG django.db.backends 5680 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:39:11,765 DEBUG jieba 15504 - Building prefix dict from D:\Develop\Python\Python36\lib\site-packages\jieba\dict.txt ...
+2017-10-12 16:39:11,767 DEBUG jieba 15504 - Loading model from cache C:\Users\ifgame\AppData\Local\Temp\jieba.cache
+2017-10-12 16:39:12,819 DEBUG jieba 15504 - Loading model cost 1.053250789642334 seconds.
+2017-10-12 16:39:12,820 DEBUG jieba 15504 - Prefix dict has been built succesfully.
+2017-10-12 16:39:12,822 ERROR django.request 15504 - Internal Server Error: /api/translate
+Traceback (most recent call last):
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Code\working\TypingSite\backend\server\main\views.py", line 9, in translateArticle
+    return JsonResponse(ret)
+  File "D:\Develop\Python\Python36\lib\site-packages\django\http\response.py", line 524, in __init__
+    'In order to allow non-dict objects to be serialized set the '
+TypeError: In order to allow non-dict objects to be serialized set the safe parameter to False.
+2017-10-12 16:39:13,093 ERROR django.server 15504 - "POST /api/translate HTTP/1.1" 500 78606
+2017-10-12 16:46:00,429 DEBUG django.db.backends 7236 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:46:00,431 DEBUG django.db.backends 7236 - (0.001) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:46:04,238 DEBUG jieba 11084 - Building prefix dict from D:\Develop\Python\Python36\lib\site-packages\jieba\dict.txt ...
+2017-10-12 16:46:04,241 DEBUG jieba 11084 - Loading model from cache C:\Users\ifgame\AppData\Local\Temp\jieba.cache
+2017-10-12 16:46:05,299 DEBUG jieba 11084 - Loading model cost 1.0607564449310303 seconds.
+2017-10-12 16:46:05,300 DEBUG jieba 11084 - Prefix dict has been built succesfully.
+2017-10-12 16:46:05,302 INFO django.server 11084 - "POST /api/translate HTTP/1.1" 200 597
+2017-10-12 16:46:35,108 DEBUG django.db.backends 12292 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:46:35,110 DEBUG django.db.backends 12292 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:46:40,550 DEBUG django.db.backends 16172 - (0.000) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:46:40,552 DEBUG django.db.backends 16172 - (0.001) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:46:42,085 DEBUG jieba 9180 - Building prefix dict from D:\Develop\Python\Python36\lib\site-packages\jieba\dict.txt ...
+2017-10-12 16:46:42,087 DEBUG jieba 9180 - Loading model from cache C:\Users\ifgame\AppData\Local\Temp\jieba.cache
+2017-10-12 16:46:43,131 DEBUG jieba 9180 - Loading model cost 1.045745611190796 seconds.
+2017-10-12 16:46:43,132 DEBUG jieba 9180 - Prefix dict has been built succesfully.
+2017-10-12 16:46:43,134 INFO django.server 9180 - "POST /api/translate HTTP/1.1" 200 535
+2017-10-12 16:47:40,331 DEBUG django.db.backends 16432 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:47:40,333 DEBUG django.db.backends 16432 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:47:54,541 DEBUG django.db.backends 12104 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:47:54,543 DEBUG django.db.backends 12104 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:48:32,938 DEBUG django.db.backends 4616 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:48:32,940 DEBUG django.db.backends 4616 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:49:56,380 DEBUG django.db.backends 5412 - (0.001) 
+            SELECT name, type FROM sqlite_master
+            WHERE type in ('table', 'view') AND NOT name='sqlite_sequence'
+            ORDER BY name; args=None
+2017-10-12 16:49:56,382 DEBUG django.db.backends 5412 - (0.000) SELECT "django_migrations"."app", "django_migrations"."name" FROM "django_migrations"; args=()
+2017-10-12 16:49:59,610 DEBUG jieba 16772 - Building prefix dict from D:\Develop\Python\Python36\lib\site-packages\jieba\dict.txt ...
+2017-10-12 16:49:59,612 DEBUG jieba 16772 - Loading model from cache C:\Users\ifgame\AppData\Local\Temp\jieba.cache
+2017-10-12 16:50:00,676 DEBUG jieba 16772 - Loading model cost 1.0652587413787842 seconds.
+2017-10-12 16:50:00,681 DEBUG jieba 16772 - Prefix dict has been built succesfully.
+2017-10-12 16:50:00,682 INFO django.server 16772 - "POST /api/translate HTTP/1.1" 200 535
+2017-10-12 16:53:31,120 INFO django.server 16168 - "POST /api/translate HTTP/1.1" 200 535
+2017-10-12 16:57:56,753 INFO django.server 8856 - "POST /api/translate HTTP/1.1" 200 535
