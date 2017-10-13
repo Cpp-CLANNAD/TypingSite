@@ -146,7 +146,7 @@
         }
     ];
 
-    article.push(...article);article.push(...article);article.push(...article);article.push(...article);
+    // article.push(...article);article.push(...article);article.push(...article);article.push(...article);
 
 
     class TypingPanel {
@@ -191,7 +191,8 @@
 
             html = '<article class="typing-panel">' + html + '</article>';
 
-            document.body.innerHTML = html;
+            let parser = new DOMParser();
+            return parser.parseFromString(html, 'text/html').body.firstChild;
         }
 
         reverseShuangpinKeyMap() {
@@ -239,9 +240,8 @@
         }
 
         init(article) {
-            this.createView(article);
-            this.el = document.querySelector('.typing-panel');
-            this.words = Array.from(document.querySelectorAll('.typing-panel > .tp-word-box'));
+            this.el = this.createView(article);
+            this.words = Array.from(this.el.querySelectorAll('.typing-panel > .tp-word-box'));
             this.length = this.words.length;
             this.current = {
                 position: 0,
@@ -251,7 +251,8 @@
         }
 
         nextStep() {
-            if(this.current.position === this.words.length - 1 && this.current.state === TypingPanel.wordState.wordEnterFinish) return;
+            // 当前文章已经键入完成
+            if(this.current.position === this.words.length - 1 && this.current.state === TypingPanel.wordState.wordEnterFinish) return false;
 
             if(this.current.state === TypingPanel.wordState.initial) {
                 if(this.current.position !== 0) throw new Error();
@@ -292,8 +293,12 @@
             } else if (this.current.state === TypingPanel.wordState.wordEnterFinish) {
                 word.classList.remove('waiting-enter-ym');
                 word.classList.add('word-enter-finish');
-                this.nextStep();
+                if(this.nextStep() === false) {
+                    this.trigger('typingover');
+                }
             }
+
+            return true;
         }
 
         enterKey(key) {
@@ -319,9 +324,12 @@
         wordEnterFinish: Symbol()
     }
 
-    window.tpl = new TypingPanel(shuangpinKeyMap['小鹤双拼']['key_map'], shuangpinKeyMap['小鹤双拼']['0']);
+    tpl = new TypingPanel(shuangpinKeyMap['小鹤双拼']['key_map'], shuangpinKeyMap['小鹤双拼']['0']);
     tpl.on('needkey', info => console.log(info));
+    tpl.on('typingover', _ => alert('敲完了'));
     tpl.init(article);
+
+    document.body.appendChild(tpl.el);
 
     window.addEventListener('keypress', ev => {
         tpl.enterKey(ev.key);
