@@ -2,9 +2,11 @@ class TypingPanel {
     constructor(keyMap, zero) {
         this.keyMap = keyMap;
         this.zero = zero;
+        this.el = document.createElement('article');
+        this.el.className = 'typing-panel';
     }
 
-    createView(article) {
+    createArticleHtml(article) {
         var rvKeyMap = this.reverseShuangpinKeyMap();
 
         var html = article.map(val => {
@@ -38,10 +40,7 @@ class TypingPanel {
             `;
         }).join('');
 
-        html = '<article class="typing-panel">' + html + '</article>';
-
-        let parser = new DOMParser();
-        return parser.parseFromString(html, 'text/html').body.firstChild;
+        return html;
     }
 
     reverseShuangpinKeyMap() {
@@ -89,8 +88,8 @@ class TypingPanel {
     }
 
     init(article) {
-        this.el = this.createView(article);
-        this.words = Array.from(this.el.querySelectorAll('.typing-panel > .tp-word-box'));
+        this.el.innerHTML = this.createArticleHtml(article);
+        this.words = Array.from(this.el.querySelectorAll('.tp-word-box'));
         this.length = this.words.length;
         this.current = {
             position: 0,
