@@ -1,0 +1,68 @@
+.tip-keyboard {
+    width: 820px;
+    border: 3px solid green;
+    border-radius: 6px;
+}
+
+.kb-row {
+    height: 70px;
+}
+
+.kb-row:nth-of-type(1) {
+    padding-left: 40px;
+}
+.kb-row:nth-of-type(2) {
+    padding-left: 55px;
+}
+.kb-row:nth-of-type(3) {
+    padding-left: 90px;
+}
+
+.kb-key {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border: 2px solid green;
+    border-radius: 4px;
+    margin: 2px 2px;
+    position: relative;
+}
+
+.kb-key.active {
+    background: pink;
+}
+
+.kb-key-code {
+    font-weight: bold;
+    position: absolute;
+    top: 2px;
+    left: 6px;
+}
+
+.kb-sm-code {
+    font-size: 13px;
+    color: red;
+    position: absolute;
+    right: 6px;
+    top: 3px;
+}
+
+.kb-sm-code.active {
+    text-decoration: underline;
+}
+
+.kb-ym-list {
+    position: absolute;
+    right: 6px;
+    top: 22px;
+}
+
+.kb-ym-code {
+    text-align: right;
+    color: blue;
+    font-size: 13px;
+    line-height: 16px;            
+}
+.kb-ym-code.active {
+    text-decoration: underline;
+}
