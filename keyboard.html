@@ -82,39 +82,42 @@
     
     <script>
 
-    var kbLayout = [
-        ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
-        ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';'],
-        ['z', 'x', 'c', 'v', 'b', 'n', 'm']
-    ];
-
-
-    var html = '';
-    html += '<article class="tip-keyboard">';
-    for(let kbRow of kbLayout) {
-        html += '<div class="kb-row">';
-        for(let key of kbRow) {
-            html += `
-                <div class="kb-key" data-key="${key}">
-                    <span class="kb-key-code">${key.toUpperCase()}</span>
-                    <span class="kb-sm-code" data-sm="${shuangpinKeyMap['小鹤双拼']['key_map'][key][0] || ''}">${shuangpinKeyMap['小鹤双拼']['key_map'][key][0] || ''}</span>
-                    <div class="kb-ym-list">
-                        ${shuangpinKeyMap['小鹤双拼']['key_map'][key][1].map(ym => '<div class="kb-ym-code" data-ym=' + ym + '>' + ym + '</div>').join('')}
-                    </div>
-                </div>
-            `;
-        }
-        html += '</div>';
-    }
-    html += '</article>';
-
-    document.body.innerHTML = html;
-
-
-
     class TipKeyboard {
         constructor() {
+            this.createView();
             this.el = document.querySelector('.tip-keyboard');
+        }
+
+        createView() {
+            let html = '<article class="tip-keyboard">';
+
+            for(let row of TipKeyboard.kbLayout) {
+
+                html += '<div class="kb-row">';
+
+                for(let key of row) {
+                    let sm = shuangpinKeyMap['小鹤双拼']['key_map'][key][0] || '',
+                        yms = shuangpinKeyMap['小鹤双拼']['key_map'][key][1];
+
+                    html += `
+                        <div class="kb-key" data-key="${key}">
+                            <span class="kb-key-code">${key.toUpperCase()}</span>
+                            <span class="kb-sm-code" data-sm="${sm}">${sm}</span>
+                            <div class="kb-ym-list">
+                                ${yms.map(ym => {
+                                    return '<div class="kb-ym-code" data-ym=' + ym + '>' + ym + '</div>'
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += '</div>';
+            }
+
+            html += '</article>';
+
+            document.body.innerHTML = html;
         }
 
         highlightKey(key) {
@@ -159,6 +162,12 @@
             }
         }
     }
+
+    TipKeyboard.kbLayout = [
+        ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+        ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';'],
+        ['z', 'x', 'c', 'v', 'b', 'n', 'm']
+    ];
 
     tpk = new TipKeyboard();
 
