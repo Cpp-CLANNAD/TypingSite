@@ -83,9 +83,9 @@
     <script>
 
     class TipKeyboard {
-        constructor() {
-            this.createView();
-            this.el = document.querySelector('.tip-keyboard');
+        constructor(keyMap) {
+            this.keyMap = keyMap;
+            this.el = this.createView();
         }
 
         createView() {
@@ -96,8 +96,8 @@
                 html += '<div class="kb-row">';
 
                 for(let key of row) {
-                    let sm = shuangpinKeyMap['小鹤双拼']['key_map'][key][0] || '',
-                        yms = shuangpinKeyMap['小鹤双拼']['key_map'][key][1];
+                    let sm = this.keyMap[key][0] || '',
+                        yms = this.keyMap[key][1];
 
                     html += `
                         <div class="kb-key" data-key="${key}">
@@ -117,50 +117,25 @@
 
             html += '</article>';
 
-            document.body.innerHTML = html;
+            let parser = new DOMParser();
+            return parser.parseFromString(html, 'text/html').body.firstChild;
         }
 
-        highlightKey(key) {
+        highlightKey(key, isHighlight) {
             var target = this.el.querySelector(`[data-key=${key}]`);
-            if(target) {
-                target.classList.add('active');
-            }
+            target && target.classList[isHighlight ? 'add' : 'remove']('active');
         }
 
-        unhighlightKey(key) {
-            var target = this.el.querySelector(`[data-key=${key}]`);
-            if(target) {
-                target.classList.remove('active');
-            }
-        }
-
-        highlightShengmu(shengmu) {
+        highlightShengmu(shengmu, isHighlight) {
             var target = this.el.querySelector(`[data-sm=${shengmu}]`);
-            if(target) {
-                target.classList.add('active');
-            }
+            target && target.classList[isHighlight ? 'add' : 'remove']('active');
         }
 
-        unhighlightShengmu(shengmu) {
-            var target = this.el.querySelector(`[data-sm=${shengmu}]`);
-            if(target) {
-                target.classList.remove('active');
-            }
-        }
-
-        highlightYunmu(yunmu) {
+        highlightYunmu(yunmu, isHighlight) {
             var target = this.el.querySelector(`[data-ym=${yunmu}]`);
-            if(target) {
-                target.classList.add('active');
-            }
+            target && target.classList[isHighlight ? 'add' : 'remove']('active');
         }
 
-        unhighlightYunmu(yunmu) {
-            var target = this.el.querySelector(`[data-ym=${yunmu}]`);
-            if(target) {
-                target.classList.remove('active');
-            }
-        }
     }
 
     TipKeyboard.kbLayout = [
@@ -169,8 +144,8 @@
         ['z', 'x', 'c', 'v', 'b', 'n', 'm']
     ];
 
-    tpk = new TipKeyboard();
-
+    tpk = new TipKeyboard(shuangpinKeyMap['小鹤双拼']['key_map']);
+    document.body.appendChild(tpk.el);
     </script>
 </body>
 </html>
