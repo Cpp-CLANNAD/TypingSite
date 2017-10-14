@@ -1,68 +1,138 @@
+.tip-keyboard,
+.tip-keyboard * {
+    box-sizing: border-box;    
+}
+
 .tip-keyboard {
-    width: 820px;
-    border: 3px solid green;
-    border-radius: 6px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 740px;
+    border: 1px solid green;
+    border-radius: .375em; /* 6px */
+    font-family: sans-serif;
 }
 
 .kb-row {
-    height: 70px;
+    overflow: hidden;
 }
 
-.kb-row:nth-of-type(1) {
-    padding-left: 40px;
+.kb-row:nth-of-type(1) > :first-child {
+    margin-left: .75%;
 }
-.kb-row:nth-of-type(2) {
-    padding-left: 55px;
+.kb-row:nth-of-type(2) > :first-child {
+    margin-left: 2.5%;
 }
-.kb-row:nth-of-type(3) {
-    padding-left: 90px;
+.kb-row:nth-of-type(3) > :first-child {
+    margin-left: 6.75%;
 }
 
 .kb-key {
-    display: inline-block;
-    width: 60px;
-    height: 60px;
-    border: 2px solid green;
-    border-radius: 4px;
-    margin: 2px 2px;
+    float: left;
+    width: 9%;
+    padding-top: 9%;    /* make height same as width. */
+    border: 1px solid #333;
+    border-radius: .4em; /* 6px */
     position: relative;
+    margin-right: .75%;
+    margin-top: .4em;
 }
 
 .kb-key.active {
-    background: pink;
+    animation: key-enter-tip .6s linear;
+    animation-direction: alternate-reverse;
+    animation-iteration-count: infinite;
+}
+
+@keyframes key-enter-tip {
+    from {
+        background: rgba(0, 170, 255, .1);
+    }
+    to {
+        background: rgba(0, 170, 255, .4);
+    }
 }
 
 .kb-key-code {
-    font-weight: bold;
     position: absolute;
-    top: 2px;
-    left: 6px;
+    top: .25em;
+    left: .375em;
+    color: #444;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 1.25em; /* 20px */
+    height: 1.25em; /* 20px */
 }
 
 .kb-sm-code {
-    font-size: 13px;
-    color: red;
     position: absolute;
-    right: 6px;
-    top: 3px;
+    top: .3077em; /* 4px */
+    right: .4615em; /* 6px */
+
+    font-size: 81.25%; /* 13px */
+    color: #fe6c9d;
+    line-height: 1.5385em; /* 20px */
+    height: 1.5385em;  /* 20px */
 }
 
 .kb-sm-code.active {
     text-decoration: underline;
+    font-weight: bold;
 }
 
 .kb-ym-list {
     position: absolute;
-    right: 6px;
-    top: 22px;
+    right: .375em; /* 6px */
+    top: 1.625em; /* 26px */
 }
 
 .kb-ym-code {
     text-align: right;
-    color: blue;
-    font-size: 13px;
-    line-height: 16px;            
+    color: #094d82;
+    font-size: 75%;
+    line-height: 1.1;          
 }
 .kb-ym-code.active {
     text-decoration: underline;
+    font-weight: bold;
+}
+
+
+@media screen and (max-width: 640px) {
+    .tip-keyboard {
+        font-size: 14px;
+    }
+
+    .kb-sm-code:not(.active) {
+        display: none;
+    }
+
+    .kb-sm-code {
+        text-decoration: none !important;
+    }
+
+    .kb-ym-code:not(.active) {
+        display: none;
+    }
+
+    .kb-ym-code {
+        text-decoration: none !important;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .tip-keyboard {
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 460px) {
+    .tip-keyboard {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .tip-keyboard {
+        font-size: 11px;
+    }
 }

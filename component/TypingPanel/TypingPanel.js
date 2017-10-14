@@ -31,7 +31,7 @@ class TypingPanel {
                     <span class="tp-sm">${smDesc}</span>
                     <span class="tp-ym">${ymDesc}</span>
                 </div>
-                <div class="tp-word">${word}</div>
+                <span class="tp-word" data-word="${word}">${word}</span>
                 <div class="tp-keys">
                     <span class="tp-sm" data-smk="${smKey}" data-sm="${sm}">${smKey}</span>
                     <span class="tp-ym" data-ymk="${ymKey}" data-ym="${ym}">${ymKey}</span>
