@@ -82,10 +82,18 @@
     tpl.init(article);
 
     document.body.appendChild(tpl.el);
-
+    
     window.addEventListener('keypress', ev => {
-        tpl.enterKey(ev.key);
-    })
+        if(tpl.enterKey(ev.key) === false) {
+            var audio = new Audio('5650.mp3');
+            audio.play();
+            var kb = document.createElement('img');
+            kb.src = 'kb.jpg';
+            kb.setAttribute('style', 'width: 100vw; height: 100vh; position: absolute; left: 0; top: 0;');
+            tpl.el.appendChild(kb);
+            setTimeout(_ => tpl.el.removeChild(kb), 500);
+        }
+    });
     </script>
 </body>
 </html>

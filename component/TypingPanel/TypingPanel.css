@@ -1,6 +1,7 @@
 .typing-panel {
-    width: 780px;
-    border: 3px solid green;
+    width: 820px;
+    box-sizing: border-box;
+    border: 1px solid green;
     border-radius: 6px;
     overflow: hidden;
     padding: 5px;
@@ -8,38 +9,51 @@
 
 .tp-word-box,
 .tp-symbol-box {
-    border: 2px solid green;
-    border-radius: 4px;
-    width: 60px;
+    border-radius: 2px;
+    width: 50px;
     float: left;
     margin: 3px 5px;
+    text-align: center;
 }
 
 .tp-pinyin {
-    height: 22px;
-    line-height: 22px;
-    text-align: center;
+    font-size: 80%;
+    height: 20px;
+    line-height: 20px;
 }
 
 .tp-pinyin > .tp-sm {
-    color: red;
+    color: #fe6c9d;
 }
 
 .tp-pinyin > .tp-ym {
-    color: green;
+    color: #094d82;
 }
 
 .tp-word {
-    line-height: 55px;
-    font-size: 26px;
-    font-weight: normal;
-    text-align: center;
+    color: #acacac;
+    height: 50px;
+    line-height: 50px;
+    font-size: 150%;
+    position: relative;
+    display: inline-block;
+}
+
+.tp-word::after {
+    content: attr(data-word);
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    color: #000;
 }
 
 .tp-keys {
-    height: 22px;
-    line-height: 22px;
-    text-align: center;
+    font-size: 80%;
+    height: 20px;
+    line-height: 20px;
 }
 
 .tp-word-box.waiting-enter-sm .tp-sm {
@@ -50,12 +64,16 @@
     text-decoration: underline;
 }
 
-.tp-word-box.word-enter-finish .tp-word {
-    color: green;
+.tp-word-box.waiting-enter-ym .tp-word::after {
+    width: 50%;
 }
 
-.tp-word-box.word-enter-finish + .tp-symbol-box {
-    color: green;
+.tp-word-box.word-enter-finish .tp-word::after {
+    width: 100%;
+}
+
+.tp-word-box.word-enter-finish + .tp-symbol-box > .tp-word {
+    color: black;
 }
 
 .hidden-over.typing-panel .tp-word-box.word-enter-finish,

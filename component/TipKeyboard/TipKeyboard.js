@@ -17,7 +17,7 @@ class TipKeyboard {
 
                 html += `
                     <div class="kb-key" data-key="${key}">
-                        <span class="kb-key-code">${key.toUpperCase()}</span>
+                        <span class="kb-key-code">${key}</span>
                         <span class="kb-sm-code" data-sm="${sm}">${sm}</span>
                         <div class="kb-ym-list">
                             ${yms.map(ym => {

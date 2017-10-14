@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="component/TipKeyboard/TipKeyboard.css">
+    <link rel="stylesheet" href="component/TypingPanel/TypingPanel.css">
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="hidden-input" style="" autofocus="true">
+
+    <script>
+    var article = [
+        {
+            "word": "偶",
+            "desc": ["ǒu"],
+            "dmap": ["ou"]
+        },
+        {
+            "word": "昂",
+            "desc": ["áng"],
+            "dmap": ["ang"]
+        },
+        {
+            "word": "天",
+            "desc": ["t", "iān"],
+            "dmap": ["t", "ian"]
+        },
+        {
+            "word": "只",
+            "desc": ["zh", "ǐ"],
+            "dmap": ["zh", "i"]
+        },
+        {
+            "word": "啊",
+            "desc": ["a"],
+            "dmap": ["a"]
+        },
+        {
+            "word": "！"
+        },
+        {
+            "word": "偶",
+            "desc": ["ǒu"],
+            "dmap": ["ou"]
+        },
+        {
+            "word": "昂",
+            "desc": ["áng"],
+            "dmap": ["ang"]
+        },
+        {
+            "word": "天",
+            "desc": ["t", "iān"],
+            "dmap": ["t", "ian"]
+        },
+        {
+            "word": "只",
+            "desc": ["zh", "ǐ"],
+            "dmap": ["zh", "i"]
+        },
+        {
+            "word": "啊",
+            "desc": ["a"],
+            "dmap": ["a"]
+        },
+        {
+            "word": "！"
+        }
+    ];    
+    </script>
+    <script src="shuangpinKeyMap.js"></script>
+    <script src="https://cdn.bootcss.com/EventEmitter/5.2.3/EventEmitter.min.js"></script>    
+    <script src="component/TipKeyboard/TipKeyboard.js"></script>
+    <script src="component/TypingPanel/TypingPanel.js"></script>
+    <script>
+        tpk = new TipKeyboard(shuangpinKeyMap['小鹤双拼']['key_map']);
+
+        tpl = new TypingPanel(shuangpinKeyMap['小鹤双拼']['key_map'], shuangpinKeyMap['小鹤双拼']['0']);
+
+        var cancelLast = _ => null;
+        tpl.on('needkey', info => {
+            console.log(info);
+            cancelLast();
+            if(info.type === 'sm') {
+                tpk.highlightKey(info.key, true);
+                tpk.highlightShengmu(info.py, true);
+                cancelLast = _ => {
+                    tpk.highlightKey(info.key, false);
+                    tpk.highlightShengmu(info.py, false);
+                }
+            }
+
+            if(info.type === 'ym') {
+                tpk.highlightKey(info.key, true);
+                tpk.highlightYunmu(info.py, true);
+                cancelLast = _ => {
+                    tpk.highlightKey(info.key, false);
+                    tpk.highlightYunmu(info.py, false);
+                }
+            }
+        });
+
+        tpl.on('typingover', _ => {
+            alert('敲完了');
+            cancelLast();
+        });
+        tpl.init(article);
+
+        document.body.appendChild(tpl.el);
+        
+        window.addEventListener('keypress', ev => {
+            if(tpl.enterKey(ev.key) === false) {
+                var audio = new Audio('5650.mp3');
+                audio.play();
+                // var kb = document.createElement('img');
+                // kb.src = 'kb.jpg';
+                // kb.setAttribute('style', 'width: 100vw; height: 100vh; position: absolute; left: 0; top: 0;');
+                // document.body.appendChild(kb);
+                // setTimeout(_ => document.body.removeChild(kb), 500);
+            }
+        });
+        
+        document.body.appendChild(tpk.el);
+        tpk.el.style.position = 'fixed';
+        tpk.el.style.bottom = '0';
+
+        tpl.el.remove()
+        
+    </script>
+</body>
+</html>
