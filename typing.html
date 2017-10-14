@@ -15,6 +15,35 @@
 </head>
 <body>
 
+    <label><input type="checkbox" id="s1" checked>显示已完成</label>
+    <label><input type="checkbox" id="s2" checked>显示拼音提示</label>
+    <label><input type="checkbox" id="s3" checked>显示双拼提示</label>
+
+    <label><input type="checkbox" id="s4" checked>显示键盘声母</label>
+    <label><input type="checkbox" id="s5" checked>显示键盘韵母</label>
+
+    <script>
+        s1.onchange = function(ev) {
+            tpl.el.classList.toggle('hidden-over');
+        }
+
+        s2.onchange = function(ev) {
+            tpl.el.classList.toggle('no-pinyin');
+        }
+
+        s3.onchange = function(ev) {
+            tpl.el.classList.toggle('no-shuangpin');
+        }
+
+        s4.onchange = function(ev) {
+            tpk.el.classList.toggle('no-sm');
+        }
+
+        s5.onchange = function(ev) {
+            tpk.el.classList.toggle('no-ym');
+        }
+    </script>
+
     <script>
     var article = [
         {
