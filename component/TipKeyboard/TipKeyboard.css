@@ -96,6 +96,13 @@
     font-weight: bold;
 }
 
+.tip-keyboard.no-sm .kb-sm-code {
+    display: none;
+}
+
+.tip-keyboard.no-ym .kb-ym-code {
+    display: none;
+}
 
 @media screen and (max-width: 640px) {
     .tip-keyboard {
