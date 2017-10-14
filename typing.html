@@ -14,7 +14,6 @@
     </style>
 </head>
 <body>
-    <input type="text" id="hidden-input" style="" autofocus="true">
 
     <script>
     var article = [
@@ -116,6 +115,13 @@
 
         document.body.appendChild(tpl.el);
         
+        tpk.on('keypress', key => {
+            if(tpl.enterKey(key) === false) {
+                var audio = new Audio('5650.mp3');
+                audio.play();
+            }
+        })
+
         window.addEventListener('keypress', ev => {
             if(tpl.enterKey(ev.key) === false) {
                 var audio = new Audio('5650.mp3');
@@ -132,7 +138,6 @@
         tpk.el.style.position = 'fixed';
         tpk.el.style.bottom = '0';
 
-        tpl.el.remove()
         
     </script>
 </body>

@@ -1,25 +1,29 @@
+.typing-panel,
+.typing-panel * {
+    box-sizing: border-box;
+}
+
 .typing-panel {
-    width: 820px;
+    font-size: 16px;
+    width: 100%;
     box-sizing: border-box;
     border: 1px solid green;
-    border-radius: 6px;
     overflow: hidden;
-    padding: 5px;
+    padding: .25em; /* 4px */
 }
 
 .tp-word-box,
 .tp-symbol-box {
-    border-radius: 2px;
-    width: 50px;
+    width: 2.75em; /* 44px */
+    margin-bottom: 1em; /* 26px */
     float: left;
-    margin: 3px 5px;
     text-align: center;
 }
 
 .tp-pinyin {
     font-size: 80%;
-    height: 20px;
-    line-height: 20px;
+    height: 18px;
+    line-height: 18px;
 }
 
 .tp-pinyin > .tp-sm {
@@ -32,8 +36,8 @@
 
 .tp-word {
     color: #acacac;
-    height: 50px;
-    line-height: 50px;
+    height: 35px;
+    line-height: 35px;
     font-size: 150%;
     position: relative;
     display: inline-block;
@@ -52,8 +56,8 @@
 
 .tp-keys {
     font-size: 80%;
-    height: 20px;
-    line-height: 20px;
+    height: 18px;
+    line-height: 18px;
 }
 
 .tp-word-box.waiting-enter-sm .tp-sm {

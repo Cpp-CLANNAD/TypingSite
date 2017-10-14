@@ -2,6 +2,13 @@ class TipKeyboard {
     constructor(keyMap) {
         this.keyMap = keyMap;
         this.el = this.createView();
+
+        // 点击提示按键时触发事件
+        Array.from(this.el.querySelectorAll('.kb-key')).forEach(el => {
+            el.addEventListener('click', ev => {
+                this.trigger('keypress', [ev.currentTarget.dataset.key]);
+            });
+        })
     }
 
     createView() {
@@ -53,6 +60,8 @@ class TipKeyboard {
     }
 
 }
+
+Object.assign(TipKeyboard.prototype, EventEmitter.prototype);
 
 TipKeyboard.kbLayout = [
     ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
