@@ -21,6 +21,7 @@
 
     <label><input type="checkbox" id="s4" checked>显示键盘声母</label>
     <label><input type="checkbox" id="s5" checked>显示键盘韵母</label>
+    <label><input type="checkbox" id="s6" checked>显示按键提示</label>
 
     <script>
         s1.onchange = function(ev) {
@@ -42,7 +43,11 @@
         s5.onchange = function(ev) {
             tpk.el.classList.toggle('no-ym');
         }
-    </script>
+
+        s6.onchange = function(ev) {
+            tpk.el.classList.toggle('no-key-tip');
+        }
+     </script>
 
     <script>
     var article = [
@@ -146,22 +151,25 @@
         
         tpk.on('keypress', key => {
             if(tpl.enterKey(key) === false) {
-                var audio = new Audio('5650.mp3');
-                audio.play();
+                keyMiss();
             }
         })
 
         window.addEventListener('keypress', ev => {
             if(tpl.enterKey(ev.key) === false) {
-                var audio = new Audio('5650.mp3');
-                audio.play();
-                // var kb = document.createElement('img');
-                // kb.src = 'kb.jpg';
-                // kb.setAttribute('style', 'width: 100vw; height: 100vh; position: absolute; left: 0; top: 0;');
-                // document.body.appendChild(kb);
-                // setTimeout(_ => document.body.removeChild(kb), 500);
+                keyMiss();
             }
         });
+
+        function keyMiss() {
+            var audio = new Audio('5650.mp3');
+                audio.play();
+                var kb = document.createElement('img');
+                kb.src = 'kb.jpg';
+                kb.setAttribute('style', 'width: 100vw; height: 100vh; position: absolute; left: 0; top: 0;');
+                document.body.appendChild(kb);
+                setTimeout(_ => document.body.removeChild(kb), 500);
+        }
         
         document.body.appendChild(tpk.el);
         tpk.el.style.position = 'fixed';
