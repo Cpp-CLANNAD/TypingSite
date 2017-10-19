@@ -32,7 +32,8 @@ class TableConfig:
     def getStrtab(self):
         return self.strtab_path
 
-TableConfig config
+
+config = TableConfig()
 
 def getKeymap(project):
     file = open(config.getStrtab(), 'r', encoding='utf8')
