@@ -5,10 +5,12 @@
 
 .typing-panel {
     font-size: 16px;
+    min-height: 320px;
+    height: 100%;
     width: 100%;
     box-sizing: border-box;
     border: 1px solid green;
-    overflow: hidden;
+    overflow-y: scroll;
     padding: .25em; /* 4px */
 }
 

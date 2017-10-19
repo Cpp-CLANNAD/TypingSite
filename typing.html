@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="component/TipKeyboard/TipKeyboard.css">
     <link rel="stylesheet" href="component/TypingPanel/TypingPanel.css">
     <style>
+        html, body {
+            height: 100%;
+        }
         body {
             margin: 0;
         }
@@ -78,42 +81,26 @@
         },
         {
             "word": "！"
-        },
-        {
-            "word": "偶",
-            "desc": ["ǒu"],
-            "dmap": ["ou"]
-        },
-        {
-            "word": "昂",
-            "desc": ["áng"],
-            "dmap": ["ang"]
-        },
-        {
-            "word": "天",
-            "desc": ["t", "iān"],
-            "dmap": ["t", "ian"]
-        },
-        {
-            "word": "只",
-            "desc": ["zh", "ǐ"],
-            "dmap": ["zh", "i"]
-        },
-        {
-            "word": "啊",
-            "desc": ["a"],
-            "dmap": ["a"]
-        },
-        {
-            "word": "！"
         }
     ];    
+    // article = [...article, ...article, ...article];article = [...article, ...article, ...article];article = [...article, ...article, ...article];
     </script>
     <script src="shuangpinKeyMap.js"></script>
     <script src="https://cdn.bootcss.com/EventEmitter/5.2.3/EventEmitter.min.js"></script>    
     <script src="component/TipKeyboard/TipKeyboard.js"></script>
     <script src="component/TypingPanel/TypingPanel.js"></script>
     <script>
+        
+        fetch('http://nfwsa.com:8001/api/article/convert', {
+            method: 'post',
+            body: window.prompt('text')
+        })
+        .then(res => res.text())
+        .then(json => {
+            console.log(json);
+            tpl.init(JSON.parse(json).article);
+        });
+            
         tpk = new TipKeyboard(shuangpinKeyMap['小鹤双拼']['key_map']);
 
         tpl = new TypingPanel(shuangpinKeyMap['小鹤双拼']['key_map'], shuangpinKeyMap['小鹤双拼']['0']);
