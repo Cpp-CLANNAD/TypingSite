@@ -6,8 +6,8 @@ class TypingPanel {
         this.el.className = 'typing-panel';
     }
 
-    createArticleHtml(article) {
-        var rvKeyMap = this.reverseShuangpinKeyMap();
+    _createArticleHtml(article) {
+        var rvKeyMap = this._reverseShuangpinKeyMap();
 
         var html = article.map(val => {
             let{word, desc, dmap} = val;
@@ -15,7 +15,7 @@ class TypingPanel {
             // 扩展零声母拼音数组
             if(desc && desc.length === 1) {
                 desc = ['', ...desc];
-                dmap = this.lingshengmuToShuangping(dmap[0], this.zero);
+                dmap = this._lingshengmuToShuangping(dmap[0], this.zero);
             }
 
             let smDesc = desc ? desc[0] : '',
@@ -43,7 +43,7 @@ class TypingPanel {
         return html;
     }
 
-    reverseShuangpinKeyMap() {
+    _reverseShuangpinKeyMap() {
         var keyMap = this.keyMap, rv = {};
 
         for(let key in keyMap) {
@@ -66,20 +66,20 @@ class TypingPanel {
     }
     
     // 零声母拼音转换为双拼形式
-    lingshengmuToShuangping(val ,type) {
+    _lingshengmuToShuangping(val ,type) {
         var vals = ['a', 'an', 'ai', 'ao', 'ang', 'e', 'en', 'ei', 'er', 'eng', 'o', 'ou'];
 
         if(vals.includes(val) === false) throw new Error();
 
         switch(type) {
-            case 1:
+            case 1:     // 非固定零声母方案
                 return [val[0], val];
-            case 2:
+            case 2:     // 非固定零声母方案（双字母音节保留全拼方式
                 if(val.length === 2)
                     return [val[0], val[1]];
                 else
                     return [val[0], val];
-            default:
+            default:    // 固定零声母方案
                 if(typeof type === 'string' && type.length === 1)
                     return [type, val];
                 else
@@ -88,17 +88,39 @@ class TypingPanel {
     }
 
     init(article) {
-        this.el.innerHTML = this.createArticleHtml(article);
+        if(this._validateArticle(article) === false) return false;
+
+        this.el.innerHTML = this._createArticleHtml(article);
         this.words = Array.from(this.el.querySelectorAll('.tp-word-box'));
         this.length = this.words.length;
         this.current = {
             position: 0,
             state: TypingPanel.wordState.initial
         }
-        this.nextStep();
+        this._nextStep();
+        return true;
     }
 
-    nextStep() {
+    _validateArticle(article) {
+        if(Array.isArray(article) === false || article.length === 0 || article[0].desc == null) {
+            return false;
+        }
+
+        return article.every(w => {
+
+            if(w.desc == null && w.dmap == null && typeof w.word === 'string' && w.word.length === 1) {
+                return true;
+            }
+
+            if(Array.isArray(w.desc) && Array.isArray(w.dmap) && w.desc.length === w.dmap.length && (w.desc.length === 1 ||  w.desc.length === 2)) {
+                return true;
+            }
+
+            return false;
+        });
+    }
+
+    _nextStep() {
         
         // 当前文章已经键入完成
         if(this.current.position === this.words.length - 1 && this.current.state === TypingPanel.wordState.wordEnterFinish) return false;
@@ -142,7 +164,7 @@ class TypingPanel {
         } else if (this.current.state === TypingPanel.wordState.wordEnterFinish) {
             word.classList.remove('waiting-enter-ym');
             word.classList.add('word-enter-finish');
-            if(this.nextStep() === false) {
+            if(this._nextStep() === false) {
                 this.trigger('typingover');
             }
         }
@@ -154,10 +176,10 @@ class TypingPanel {
         let word = this.words[this.current.position];
         let needKey;
         if(this.current.state === TypingPanel.wordState.waitingEnterSm && word.querySelector('.tp-keys > .tp-sm').dataset.smk === key) {
-                this.nextStep();
+                this._nextStep();
                 return true;
         } else if (this.current.state === TypingPanel.wordState.waitingEnterYm && word.querySelector('.tp-keys > .tp-ym').dataset.ymk === key) {
-                this.nextStep();
+                this._nextStep();
                 return true;
         }
         return false;
