@@ -14,11 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-import main.views as views
+from main.api import article, scheme
 
 urlpatterns = [
-    url(r'^translate$', views.translateArticle, name='translateArticle'),
+    url(r'^article/list$', article.getList, name='article_list'),
+    url(r'^article/(?P<id>\d{1,3})$', article.getArticle, name='article_get'),
+    url(r'^article/convert/(?P<name>\w+)$', article.convertArticle, name='article_convert'),
+    url(r'^article/convert$', article.convertArticle, name='article_convert'),
 
+    url(r'^scheme/list$', scheme.getList, name='scheme_list'),
+    url(r'^scheme/(?P<name>\w+)$', scheme.getScheme, name='scheme_get'),
     # url(r'^category/list$', category.list, name='category_list'),
 
     # url(r'^phone/sign$', phone.sign, name='phone_sign'),
