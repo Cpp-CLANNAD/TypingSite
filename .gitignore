@@ -1,0 +1,5 @@
+pycache/
+*.pyc
+.vscode/
+keymap.json
+strmap.json
