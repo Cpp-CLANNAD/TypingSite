@@ -26,6 +26,11 @@
     <label><input type="checkbox" id="s5" checked>显示键盘韵母</label>
     <label><input type="checkbox" id="s6" checked>显示按键提示</label>
 
+    <form id="form">
+        <textarea id="textarea" cols="30" rows="10" style="width: 100%;">偶俺天只啊创！</textarea>
+        <input type="submit">
+    </form>
+
     <script>
         s1.onchange = function(ev) {
             tpl.el.classList.toggle('hidden-over');
@@ -52,58 +57,28 @@
         }
      </script>
 
-    <script>
-    var article = [
-        {
-            "word": "偶",
-            "desc": ["ǒu"],
-            "dmap": ["ou"]
-        },
-        {
-            "word": "昂",
-            "desc": ["áng"],
-            "dmap": ["ang"]
-        },
-        {
-            "word": "天",
-            "desc": ["t", "iān"],
-            "dmap": ["t", "ian"]
-        },
-        {
-            "word": "只",
-            "desc": ["zh", "ǐ"],
-            "dmap": ["zh", "i"]
-        },
-        {
-            "word": "啊",
-            "desc": ["a"],
-            "dmap": ["a"]
-        },
-        {
-            "word": "！"
-        }
-    ];
-    // article = [...article, ...article, ...article];article = [...article, ...article, ...article];article = [...article, ...article, ...article];
-    </script>
     <script src="shuangpinKeyMap.js"></script>
     <script src="https://cdn.bootcss.com/EventEmitter/5.2.3/EventEmitter.min.js"></script>
     <script src="component/TipKeyboard/TipKeyboard.js"></script>
     <script src="component/TypingPanel/TypingPanel.js"></script>
     <script>
+        document.getElementById('form').addEventListener('submit', ev => {
+            ev.preventDefault();
 
-
-        fetch('http://nfwsa.com:8001/api/article/convert', {
-            method: 'post',
-            body: window.prompt('text')
-        })
-        .then(res => res.json())
-        .then(json => {
-            console.log(json);
-            tpl.init(json.article);
-        })
-        .catch(err => {
-            console.log(err);
+            fetch('http://nfwsa.com:8001/api/article/convert', {
+                method: 'post',
+                body: document.getElementById('textarea').value
+            })
+            .then(res => res.json())
+            .then(json => {
+                console.log(json);
+                tpl.init(json.article);
+            })
+            .catch(err => {
+                console.log(err);
+            });
         });
+
 
         tpk = new TipKeyboard(shuangpinKeyMap['小鹤双拼']['key_map']);
 
@@ -130,7 +105,6 @@
                 audio.play();
             cancelLast();
         });
-        tpl.init(article);
 
         document.body.appendChild(tpl.el);
 
