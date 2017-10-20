@@ -82,15 +82,15 @@
         {
             "word": "！"
         }
-    ];    
+    ];
     // article = [...article, ...article, ...article];article = [...article, ...article, ...article];article = [...article, ...article, ...article];
     </script>
     <script src="shuangpinKeyMap.js"></script>
-    <script src="https://cdn.bootcss.com/EventEmitter/5.2.3/EventEmitter.min.js"></script>    
+    <script src="https://cdn.bootcss.com/EventEmitter/5.2.3/EventEmitter.min.js"></script>
     <script src="component/TipKeyboard/TipKeyboard.js"></script>
     <script src="component/TypingPanel/TypingPanel.js"></script>
     <script>
-        
+
 
             fetch('http://nfwsa.com:8001/api/article/convert', {
                 method: 'post',
@@ -104,7 +104,7 @@
             .catch(err => {
                 console.log(err);
             });
-            
+
         tpk = new TipKeyboard(shuangpinKeyMap['小鹤双拼']['key_map']);
 
         tpl = new TypingPanel(shuangpinKeyMap['小鹤双拼']['key_map'], shuangpinKeyMap['小鹤双拼']['0']);
@@ -133,40 +133,50 @@
         });
 
         tpl.on('typingover', _ => {
-            alert('敲完了');
+            var audio = new Audio('sound/finished.mp3');
+                audio.play();
+            //alert('敲完了');
             cancelLast();
         });
         tpl.init(article);
 
         document.body.appendChild(tpl.el);
-        
+
         tpk.on('keypress', key => {
-            if(tpl.enterKey(key) === false) {
-                keyMiss();
-            }
+            keyPress(ev.key);
         })
 
         window.addEventListener('keypress', ev => {
-            if(tpl.enterKey(ev.key) === false) {
-                keyMiss();
-            }
+            keyPress(ev.key);
         });
 
-        function keyMiss() {
-            var audio = new Audio('5650.mp3');
-                audio.play();
-                var kb = document.createElement('img');
-                kb.src = 'kb.jpg';
-                kb.setAttribute('style', 'width: 100vw; height: 100vh; position: absolute; left: 0; top: 0;');
-                document.body.appendChild(kb);
-                setTimeout(_ => document.body.removeChild(kb), 500);
+        function keyPress(key) {
+            if(tpl.current.state != TypingPanel.wordState.wordEnterFinish) {
+                if(tpl.enterKey(key) === false) {
+                    keyMiss();
+                }
+                else
+                    keySuccess();
+            }
         }
-        
+
+        function keyMiss() {
+            var audio = new Audio('sound/miss.mp3');
+                audio.play();
+        }
+
+        function keySuccess() {
+            // 两套声音方案
+            var audio = new Audio('sound/key_press_00.mp3');
+            //var audio = new Audio('sound/key_press_0' + Number.parseInt(Math.random() * 4) + '.wav');
+                audio.play();
+        }
+
         document.body.appendChild(tpk.el);
         tpk.el.style.position = 'fixed';
         tpk.el.style.bottom = '0';
 
-        
+
     </script>
 </body>
 </html>
