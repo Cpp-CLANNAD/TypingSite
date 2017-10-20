@@ -6,6 +6,33 @@ class TypingPanel {
         this.el.className = 'typing-panel';
     }
 
+    init(article) {
+        if(this._validateArticle(article) === false) return false;
+
+        this.el.innerHTML = this._createArticleHtml(article);
+        this.words = Array.from(this.el.querySelectorAll('.tp-word-box'));
+        this.length = this.words.length;
+        this.current = {
+            position: 0,
+            state: TypingPanel.wordState.initial
+        }
+        this._nextStep();
+        return true;
+    }
+
+    enterKey(key) {
+        let word = this.words[this.current.position];
+        let needKey;
+        if(this.current.state === TypingPanel.wordState.waitingEnterSm && word.querySelector('.tp-keys > .tp-sm').dataset.smk === key) {
+                this._nextStep();
+                return true;
+        } else if (this.current.state === TypingPanel.wordState.waitingEnterYm && word.querySelector('.tp-keys > .tp-ym').dataset.ymk === key) {
+                this._nextStep();
+                return true;
+        }
+        return false;
+    }
+
     _createArticleHtml(article) {
         var rvKeyMap = this._reverseShuangpinKeyMap();
 
@@ -87,32 +114,13 @@ class TypingPanel {
         }
     }
 
-    init(article) {
-        if(this._validateArticle(article) === false) return false;
-
-        this.el.innerHTML = this._createArticleHtml(article);
-        this.words = Array.from(this.el.querySelectorAll('.tp-word-box'));
-        this.length = this.words.length;
-        this.current = {
-            position: 0,
-            state: TypingPanel.wordState.initial
-        }
-        this._nextStep();
-        return true;
-    }
-
     _validateArticle(article) {
-        if(Array.isArray(article) === false || article.length === 0 || article[0].desc == null) {
-            return false;
-        }
+        if(Array.isArray(article) === false || article.length === 0 || article[0].desc == null) return false;
 
-        return article.every(w => {
+        return article.every(({word, desc, dmap}) => {
 
-            if(w.desc == null && w.dmap == null && typeof w.word === 'string' && w.word.length === 1) {
-                return true;
-            }
-
-            if(Array.isArray(w.desc) && Array.isArray(w.dmap) && w.desc.length === w.dmap.length && (w.desc.length === 1 ||  w.desc.length === 2)) {
+            if( (desc == null && dmap == null && typeof word === 'string' && word.length === 1) || 
+                (Array.isArray(desc) && Array.isArray(dmap) && desc.length === dmap.length && desc.length !== 0)) {
                 return true;
             }
 
@@ -143,47 +151,46 @@ class TypingPanel {
             throw new Error();
         }
 
+        this._handleState();
+
+        return true;
+    }
+
+    _handleState() {
         let word = this.words[this.current.position],
             state = this.current.state;
 
         if(this.current.state === TypingPanel.wordState.waitingEnterSm) {
             word.classList.add('waiting-enter-sm');
-            this.trigger('needkey', [{
-                type: 'sm',
-                key : word.querySelector('.tp-keys > .tp-sm').dataset.smk,
-                py  : word.querySelector('.tp-keys > .tp-sm').dataset.sm,
+
+            let sm = word.querySelector('.tp-keys > .tp-sm');
+            this.trigger('need', [{
+                type:'sm', 
+                key: sm.dataset.smk, 
+                py: sm.dataset.sm
             }]);
+
         } else if (this.current.state === TypingPanel.wordState.waitingEnterYm) {
             word.classList.remove('waiting-enter-sm');
             word.classList.add('waiting-enter-ym');
-            this.trigger('needkey', [{
-                type: 'ym',
-                key : word.querySelector('.tp-keys > .tp-ym').dataset.ymk,
-                py  : word.querySelector('.tp-keys > .tp-ym').dataset.ym,
+
+            let ym = word.querySelector('.tp-keys > .tp-ym');
+            this.trigger('need', [{
+                type:'ym', 
+                key: ym.dataset.ymk, 
+                py: ym.dataset.ym
             }]);
+
         } else if (this.current.state === TypingPanel.wordState.wordEnterFinish) {
             word.classList.remove('waiting-enter-ym');
             word.classList.add('word-enter-finish');
+            
             if(this._nextStep() === false) {
-                this.trigger('typingover');
+                this.trigger('over');
             }
-        }
-
-        return true;
+        }    
     }
-
-    enterKey(key) {
-        let word = this.words[this.current.position];
-        let needKey;
-        if(this.current.state === TypingPanel.wordState.waitingEnterSm && word.querySelector('.tp-keys > .tp-sm').dataset.smk === key) {
-                this._nextStep();
-                return true;
-        } else if (this.current.state === TypingPanel.wordState.waitingEnterYm && word.querySelector('.tp-keys > .tp-ym').dataset.ymk === key) {
-                this._nextStep();
-                return true;
-        }
-        return false;
-    }
+    
 }
 
 Object.assign(TypingPanel.prototype, EventEmitter.prototype);

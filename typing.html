@@ -110,7 +110,7 @@
         tpl = new TypingPanel(shuangpinKeyMap['小鹤双拼']['key_map'], shuangpinKeyMap['小鹤双拼']['0']);
 
         var cancelLast = _ => null;
-        tpl.on('needkey', info => {
+        tpl.on('need', info => {
             console.log(info);
             cancelLast();
             
@@ -125,7 +125,7 @@
             }
         });
 
-        tpl.on('typingover', _ => {
+        tpl.on('over', _ => {
             var audio = new Audio('sound/finished.mp3');
                 audio.play();
             cancelLast();
@@ -135,7 +135,7 @@
         document.body.appendChild(tpl.el);
 
         tpk.on('keypress', key => {
-            keyPress(ev.key);
+            keyPress(key);
         })
 
         window.addEventListener('keypress', ev => {
