@@ -9,23 +9,28 @@
     height: 100%;
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid green;
+    border: 1px solid gray;
     overflow-y: scroll;
     padding: .25em; /* 4px */
 }
 
 .tp-word-box,
 .tp-symbol-box {
-    width: 2.75em; /* 44px */
+    width: 3em; /* 48px */
     margin-bottom: 1em; /* 26px */
     float: left;
     text-align: center;
 }
 
-.tp-pinyin {
-    font-size: 80%;
+.tp-pinyin, .tp-keys {
+    font-size: 75%;
     height: 18px;
     line-height: 18px;
+}
+
+.tp-pinyin {
+    white-space: nowrap;
+    word-spacing: -.2em;
 }
 
 .tp-pinyin > .tp-sm {
@@ -56,12 +61,6 @@
     color: #000;
 }
 
-.tp-keys {
-    font-size: 80%;
-    height: 18px;
-    line-height: 18px;
-}
-
 .tp-word-box.waiting-enter-sm .tp-sm {
     text-decoration: underline;
 }
@@ -78,12 +77,17 @@
     width: 100%;
 }
 
-.tp-word-box.word-enter-finish + .tp-symbol-box > .tp-word {
+/* 文字后面跟着的最多三个符号会被渲染为已完成 */
+.tp-word-box.word-enter-finish + .tp-symbol-box > .tp-word,
+.tp-word-box.word-enter-finish + .tp-symbol-box + .tp-symbol-box > .tp-word,
+.tp-word-box.word-enter-finish + .tp-symbol-box + .tp-symbol-box + .tp-symbol-box > .tp-word {
     color: black;
 }
 
 .hidden-over.typing-panel .tp-word-box.word-enter-finish,
-.hidden-over.typing-panel .tp-word-box.word-enter-finish + .tp-symbol-box {
+.hidden-over.typing-panel .tp-word-box.word-enter-finish + .tp-symbol-box,
+.hidden-over.typing-panel .tp-word-box.word-enter-finish + .tp-symbol-box + .tp-symbol-box,
+.hidden-over.typing-panel .tp-word-box.word-enter-finish + .tp-symbol-box + .tp-symbol-box + .tp-symbol-box  {
     display: none;
 }
 

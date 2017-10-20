@@ -23,16 +23,13 @@ class TipKeyboard {
                     yms = this.keyMap[key][1];
 
                 html += `
-                    <div class="kb-key" data-key="${key}">
-                        <span class="kb-key-code">${key}</span>
-                        <span class="kb-sm-code" data-sm="${sm}">${sm}</span>
-                        <div class="kb-ym-list">
-                            ${yms.map(ym => {
-                                return '<div class="kb-ym-code" data-ym=' + ym + '>' + ym + '</div>'
-                            }).join('')}
-                        </div>
+                <div class="kb-key" data-key="${key}">
+                    <span class="kb-key-code">${key}</span>
+                    <span class="kb-sm-code" data-sm="${sm}">${sm}</span>
+                    <div class="kb-ym-list">
+                        ${yms.map(ym => '<div class="kb-ym-code" data-ym=' + ym + '>' + ym + '</div>').join('')}
                     </div>
-                `;
+                </div>`;
             }
 
             html += '</div>';
