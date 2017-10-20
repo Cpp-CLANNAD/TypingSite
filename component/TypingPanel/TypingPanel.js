@@ -1,7 +1,8 @@
 class TypingPanel {
     constructor(keyMap, zero) {
-        this.keyMap = keyMap;
-        this.zero = zero;
+        this._keyMap = keyMap;
+        this._zero = zero;
+        
         this.el = document.createElement('article');
         this.el.className = 'typing-panel';
     }
@@ -10,9 +11,8 @@ class TypingPanel {
         if(this._validateArticle(article) === false) return false;
 
         this.el.innerHTML = this._createArticleHtml(article);
-        this.words = Array.from(this.el.querySelectorAll('.tp-word-box'));
-        this.length = this.words.length;
-        this.current = {
+        this._words = Array.from(this.el.querySelectorAll('.tp-word-box'));
+        this._current = {
             position: 0,
             state: TypingPanel.wordState.initial
         }
@@ -21,15 +21,17 @@ class TypingPanel {
     }
 
     enterKey(key) {
-        let word = this.words[this.current.position];
-        let needKey;
-        if(this.current.state === TypingPanel.wordState.waitingEnterSm && word.querySelector('.tp-keys > .tp-sm').dataset.smk === key) {
+        if(this._current.state === TypingPanel.wordState.wordEnterFinish) return false;
+
+        let word = this._words[this._current.position];
+        if(this._current.state === TypingPanel.wordState.waitingEnterSm && word.querySelector('.tp-keys > .tp-sm').dataset.smk === key || 
+            this._current.state === TypingPanel.wordState.waitingEnterYm && word.querySelector('.tp-keys > .tp-ym').dataset.ymk === key) {
                 this._nextStep();
-                return true;
-        } else if (this.current.state === TypingPanel.wordState.waitingEnterYm && word.querySelector('.tp-keys > .tp-ym').dataset.ymk === key) {
-                this._nextStep();
+                this.trigger('hit');
                 return true;
         }
+
+        this.trigger('miss');
         return false;
     }
 
@@ -42,7 +44,7 @@ class TypingPanel {
             // 扩展零声母拼音数组
             if(desc && desc.length === 1) {
                 desc = ['', ...desc];
-                dmap = this._lingshengmuToShuangping(dmap[0], this.zero);
+                dmap = this._lingshengmuToShuangping(dmap[0], this._zero);
             }
 
             let smDesc = desc ? desc[0] : '',
@@ -58,7 +60,9 @@ class TypingPanel {
                     <span class="tp-sm">${smDesc}</span>
                     <span class="tp-ym">${ymDesc}</span>
                 </div>
-                <span class="tp-word" data-word="${word}">${word}</span>
+                <div class="tp-word">
+                    <span class="tp-word-in" data-word="${word}">${word}</span>
+                </div>
                 <div class="tp-keys">
                     <span class="tp-sm" data-smk="${smKey}" data-sm="${sm}">${smKey}</span>
                     <span class="tp-ym" data-ymk="${ymKey}" data-ym="${ym}">${ymKey}</span>
@@ -71,7 +75,7 @@ class TypingPanel {
     }
 
     _reverseShuangpinKeyMap() {
-        var keyMap = this.keyMap, rv = {};
+        var keyMap = this._keyMap, rv = {};
 
         for(let key in keyMap) {
             if(!keyMap.hasOwnProperty(key)) break;
@@ -131,21 +135,21 @@ class TypingPanel {
     _nextStep() {
         
         // 当前文章已经键入完成
-        if(this.current.position === this.words.length - 1 && this.current.state === TypingPanel.wordState.wordEnterFinish) return false;
+        if(this._current.position === this._words.length - 1 && this._current.state === TypingPanel.wordState.wordEnterFinish) return false;
 
-        if(this.current.state === TypingPanel.wordState.initial) {
-            if(this.current.position !== 0) throw new Error();
-            this.current.state = TypingPanel.wordState.waitingEnterSm;
+        if(this._current.state === TypingPanel.wordState.initial) {
+            if(this._current.position !== 0) throw new Error();
+            this._current.state = TypingPanel.wordState.waitingEnterSm;
             
-        } else if (this.current.state === TypingPanel.wordState.waitingEnterSm) {
-            this.current.state = TypingPanel.wordState.waitingEnterYm;
+        } else if (this._current.state === TypingPanel.wordState.waitingEnterSm) {
+            this._current.state = TypingPanel.wordState.waitingEnterYm;
 
-        } else if (this.current.state === TypingPanel.wordState.waitingEnterYm) {
-            this.current.state = TypingPanel.wordState.wordEnterFinish;
+        } else if (this._current.state === TypingPanel.wordState.waitingEnterYm) {
+            this._current.state = TypingPanel.wordState.wordEnterFinish;
 
-        } else if (this.current.state === TypingPanel.wordState.wordEnterFinish) {
-            this.current.position++;
-            this.current.state = TypingPanel.wordState.waitingEnterSm;
+        } else if (this._current.state === TypingPanel.wordState.wordEnterFinish) {
+            this._current.position++;
+            this._current.state = TypingPanel.wordState.waitingEnterSm;
             
         } else {
             throw new Error();
@@ -157,10 +161,10 @@ class TypingPanel {
     }
 
     _handleState() {
-        let word = this.words[this.current.position],
-            state = this.current.state;
+        let word = this._words[this._current.position],
+            state = this._current.state;
 
-        if(this.current.state === TypingPanel.wordState.waitingEnterSm) {
+        if(this._current.state === TypingPanel.wordState.waitingEnterSm) {
             word.classList.add('waiting-enter-sm');
 
             let sm = word.querySelector('.tp-keys > .tp-sm');
@@ -170,7 +174,7 @@ class TypingPanel {
                 py: sm.dataset.sm
             }]);
 
-        } else if (this.current.state === TypingPanel.wordState.waitingEnterYm) {
+        } else if (this._current.state === TypingPanel.wordState.waitingEnterYm) {
             word.classList.remove('waiting-enter-sm');
             word.classList.add('waiting-enter-ym');
 
@@ -181,12 +185,16 @@ class TypingPanel {
                 py: ym.dataset.ym
             }]);
 
-        } else if (this.current.state === TypingPanel.wordState.wordEnterFinish) {
+        } else if (this._current.state === TypingPanel.wordState.wordEnterFinish) {
             word.classList.remove('waiting-enter-ym');
             word.classList.add('word-enter-finish');
+            this.trigger('pass', [{
+                total: this._words.length,
+                current: this._current.position + 1
+            }]);
             
             if(this._nextStep() === false) {
-                this.trigger('over');
+                this.trigger('finish');
             }
         }    
     }

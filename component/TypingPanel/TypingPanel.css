@@ -16,16 +16,16 @@
 
 .tp-word-box,
 .tp-symbol-box {
-    width: 3em; /* 48px */
-    margin-bottom: 1em; /* 26px */
+    width: 3.25em; /* 52px */
+    margin-bottom: .75em; /* 12px */
     float: left;
     text-align: center;
 }
 
 .tp-pinyin, .tp-keys {
     font-size: 75%;
-    height: 18px;
-    line-height: 18px;
+    height: 1.3333em; /* 16px */
+    line-height: 1.3333em; /* 16px */
 }
 
 .tp-pinyin {
@@ -43,14 +43,16 @@
 
 .tp-word {
     color: #acacac;
-    height: 35px;
-    line-height: 35px;
-    font-size: 150%;
-    position: relative;
-    display: inline-block;
+    font-size: 125%;
+    height: 1.25em; /* 25px */
+    line-height: 1.25em; /* 25px */
 }
 
-.tp-word::after {
+.tp-word-in {
+    position: relative;
+}
+
+.tp-word-in::after {
     content: attr(data-word);
     overflow: hidden;
     position: absolute;
@@ -69,11 +71,11 @@
     text-decoration: underline;
 }
 
-.tp-word-box.waiting-enter-ym .tp-word::after {
+.tp-word-box.waiting-enter-ym .tp-word-in::after {
     width: 50%;
 }
 
-.tp-word-box.word-enter-finish .tp-word::after {
+.tp-word-box.word-enter-finish .tp-word-in::after {
     width: 100%;
 }
 
@@ -98,3 +100,4 @@
 .no-shuangpin.typing-panel .tp-keys {
     display: none;
 }
+

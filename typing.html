@@ -31,6 +31,8 @@
         <input type="submit">
     </form>
 
+    <p id="count"></p>
+
     <script>
         s1.onchange = function(ev) {
             tpl.el.classList.toggle('hidden-over');
@@ -100,7 +102,11 @@
             }
         });
 
-        tpl.on('over', _ => {
+        tpl.on('pass', info => {
+            document.getElementById('count').innerHTML = `总数：${info.total}，当前：${info.current}`;
+        });
+
+        tpl.on('finish', _ => {
             var audio = new Audio('sound/finished.mp3');
                 audio.play();
             cancelLast();
@@ -109,31 +115,23 @@
         document.body.appendChild(tpl.el);
 
         tpk.on('keypress', key => {
-            keyPress(key);
+            tpl.enterKey(key)
         })
 
         window.addEventListener('keypress', ev => {
-            keyPress(ev.key);
+            tpl.enterKey(ev.key)
         });
 
-        function keyPress(key) {
-            if(tpl.current.state != TypingPanel.wordState.wordEnterFinish) {
-                if(tpl.enterKey(key) === false) {
-                    keyMiss();
-                }
-                else
-                    keySuccess();
-            }
+        tpl.on('hit', keySuccess);
+        tpl.on('miss', keyMiss);
+
+        function keySuccess() {
+            var audio = new Audio('sound/press.mp3');
+                audio.play();
         }
 
         function keyMiss() {
             var audio = new Audio('sound/miss.mp3');
-                audio.play();
-        }
-
-        function keySuccess() {
-            // 两套声音方案
-            var audio = new Audio('sound/press.mp3');
                 audio.play();
         }
 
