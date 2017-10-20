@@ -92,18 +92,18 @@
     <script>
 
 
-            fetch('http://nfwsa.com:8001/api/article/convert', {
-                method: 'post',
-                body: window.prompt('text')
-            })
-            .then(res => res.json())
-            .then(json => {
-                console.log(json);
-                tpl.init(json.article);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        fetch('http://nfwsa.com:8001/api/article/convert', {
+            method: 'post',
+            body: window.prompt('text')
+        })
+        .then(res => res.json())
+        .then(json => {
+            console.log(json);
+            tpl.init(json.article);
+        })
+        .catch(err => {
+            console.log(err);
+        });
 
         tpk = new TipKeyboard(shuangpinKeyMap['小鹤双拼']['key_map']);
 
@@ -135,7 +135,6 @@
         tpl.on('typingover', _ => {
             var audio = new Audio('sound/finished.mp3');
                 audio.play();
-            //alert('敲完了');
             cancelLast();
         });
         tpl.init(article);
@@ -168,7 +167,6 @@
         function keySuccess() {
             // 两套声音方案
             var audio = new Audio('sound/key_press_00.mp3');
-            //var audio = new Audio('sound/key_press_0' + Number.parseInt(Math.random() * 4) + '.wav');
                 audio.play();
         }
 
