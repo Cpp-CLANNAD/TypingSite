@@ -3,6 +3,7 @@
 import json
 from sys import argv
 from pypinyin import pinyin as py
+from pypinyin import lazy_pinyin as lapy
 from pypinyin import Style as ST
 
 class TableConfig:
@@ -54,30 +55,36 @@ def printHelp():
     print('\tgenerate data from string with project, default project is Microsoft\n')
 
 
+def parseOtherStr(str):
+    return [ch for ch in str]
+
+
 def articleToObject(article, keymap):
-    lhTone = py(article, style=ST.INITIALS)
-    rhTone = py(article, style=ST.FINALS_TONE)
-    rhCh = py(article, style=ST.FINALS)
+    lhTone = py(article, style=ST.INITIALS, errors=parseOtherStr)
+    rhTone = py(article, style=ST.FINALS_TONE, errors=parseOtherStr)
+    rhCh = py(article, style=ST.FINALS, errors=parseOtherStr)
 
     # tone = [[lhTone[i][0], rhTone[i][0]] for i in range(len(article))]
     tone = []
-    for i in range(len(article)):
+    for i in range(len(lhTone)):
         tmp = []
         if lhTone[i][0] != '':
-            tmp.append(lhTone[i][0])
+            for x in lhTone[i]:
+                tmp.append(x)
         if rhTone[i][0] != '':
-            tmp.append(rhTone[i][0])
+            for x in rhTone[i]:
+                tmp.append(x)
         tone.append(tmp)
     keys = []
-    for i in range(len(article)):
+    for i in range(len(lhTone)):
         tmp = []
         if not lhTone[i][0] in keymap:
-            pass #tmp.append('')
+            pass
         else:
             # tmp.append(keymap[lhTone[i][0]])  # dmap按键方案
             tmp.append(lhTone[i][0])    # dmap声韵母方案
         if not rhCh[i][0] in keymap:
-            pass #tmp.append('')
+            pass
         else:
             # tmp.append(keymap[rhCh[i][0]])    # dmap按键方案
             tmp.append(rhCh[i][0])  # dmap声韵母方案
@@ -105,12 +112,19 @@ def articleToObject(article, keymap):
     # 非汉字desc/dmap删除项目
     ret = { 'article': [] }
     rlt = ret['article']
-    for i in range(len(article)):
-        tmp = { 'word': article[i] }
-        if tone[i][0] != article[i]:
-            tmp['desc'] = tone[i]
-            tmp['dmap'] = keys[i]
-        rlt.append(tmp)
+    iWord = 0
+    for iKey in range(len(tone)):
+        tmp = { 'word': article[iWord] }
+        if tone[iKey][0] != article[iWord][0]:
+            tmp['desc'] = tone[iKey]
+            tmp['dmap'] = keys[iKey]
+            rlt.append(tmp)
+            iWord += 1
+        else:
+            for iIdx in range(int(len(tone[iKey]) / 2)):
+                tmp = { 'word': tone[iKey][iIdx] }
+                rlt.append(tmp)
+                iWord += 1
     return ret
     # json.dumps(rlt, ensure_ascii=False)
 
