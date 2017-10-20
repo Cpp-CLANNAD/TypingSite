@@ -1,7 +1,7 @@
 class TipKeyboard {
     constructor(keyMap) {
         this.keyMap = keyMap;
-        this.el = this.createView();
+        this.el = this._createView();
 
         // 点击提示按键时触发事件
         Array.from(this.el.querySelectorAll('.kb-key')).forEach(el => {
@@ -11,7 +11,7 @@ class TipKeyboard {
         })
     }
 
-    createView() {
+    _createView() {
         let html = '<article class="tip-keyboard">';
 
         for(let row of TipKeyboard.kbLayout) {
@@ -44,19 +44,22 @@ class TipKeyboard {
         return parser.parseFromString(html, 'text/html').body.firstChild;
     }
 
-    highlightKey(key, isHighlight) {
+    highlightKey(key, isHighlight = true) {
         var target = this.el.querySelector(`[data-key=${key}]`);
         target && target.classList[isHighlight ? 'add' : 'remove']('active');
+        return this;
     }
 
-    highlightShengmu(shengmu, isHighlight) {
+    highlightShengmu(shengmu, isHighlight = true) {
         var target = this.el.querySelector(`[data-sm=${shengmu}]`);
         target && target.classList[isHighlight ? 'add' : 'remove']('active');
+        return this;
     }
 
-    highlightYunmu(yunmu, isHighlight) {
+    highlightYunmu(yunmu, isHighlight = true) {
         var target = this.el.querySelector(`[data-ym=${yunmu}]`);
         target && target.classList[isHighlight ? 'add' : 'remove']('active');
+        return this;
     }
 
 }
