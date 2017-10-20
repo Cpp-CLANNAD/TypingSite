@@ -13,7 +13,7 @@
     <script src="https://cdn.bootcss.com/EventEmitter/5.2.3/EventEmitter.min.js"></script>
     <script src="TypingPanel.js"></script>
     <script>
-        
+
     var article = [
         {
             "word": "偶",
@@ -78,20 +78,22 @@
 
     tpl = new TypingPanel(shuangpinKeyMap['小鹤双拼']['key_map'], shuangpinKeyMap['小鹤双拼']['0']);
     tpl.on('needkey', info => console.log(info));
-    tpl.on('typingover', _ => alert('敲完了'));
+    tpl.on('typingover', _ => new Audio('../../sound/finished.mp3').play());
     tpl.init(article);
 
     document.body.appendChild(tpl.el);
-    
+
     window.addEventListener('keypress', ev => {
-        if(tpl.enterKey(ev.key) === false) {
-            var audio = new Audio('5650.mp3');
+        if(tpl.current.state != TypingPanel.wordState.wordEnterFinish) {
+            if(tpl.enterKey(ev.key) === false) {
+                var audio = new Audio('../../sound/miss.mp3');
+            }
+            else {
+                // 两套声音方案
+                var audio = new Audio('../../sound/key_press_00.mp3');
+                //var audio = new Audio('sound/key_press_0' + Number.parseInt(Math.random() * 4) + '.wav');
+            }
             audio.play();
-            var kb = document.createElement('img');
-            kb.src = 'kb.jpg';
-            kb.setAttribute('style', 'width: 100vw; height: 100vh; position: absolute; left: 0; top: 0;');
-            tpl.el.appendChild(kb);
-            setTimeout(_ => tpl.el.removeChild(kb), 500);
         }
     });
     </script>
