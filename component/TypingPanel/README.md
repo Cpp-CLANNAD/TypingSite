@@ -50,13 +50,17 @@ window.addEventListener('keypress', ev => {
 
 #### 参数
 
-`article`：文章，参加 XXXX
+`article`：文章，参见 XXXX
 
 #### 返回值
 
 初始化失败返回`false`，初始化成功返回`true`。
 
 初始化失败的原因通常为文章不符合规范：长度为0、文章以符号开头、`article`的数据格式错误
+
+#### 注意事项
+
+在调用该方法之前先完成对`need`事件的监听，否则会错过第一次`need`事件。
 
 ---
 
@@ -85,7 +89,7 @@ window.addEventListener('keypress', ev => {
 
 #### 参数
 
-`key`：需要输入的按键键名，可以为任意字符串，但仅当按键为`'a'`-`'z'`或`';'`时可能返回真
+`key`：需要输入的按键键名，可以为任意字符串，当且仅当按键为`key_map`中的键时可能返回真
 
 #### 返回值
 
@@ -97,9 +101,9 @@ window.addEventListener('keypress', ev => {
 
 ### need
 
-> `need`事件会在调用`TypingPanel.prototype.init`方法返回`true`时触发一次，之后在每次调用`TypingPanel.prototype.enterKey`方法返回`true`时触发。
+> 该事件在调用`TypingPanel.prototype.init`方法时返回`true`时触发一次，之后在每次调用`TypingPanel.prototype.enterKey`方法返回`true`时触发
 
-`need`事件携带了下一个期望的键入信息
+该事件携带了下一个期望的键入信息：
 
 ```js
 typingPanel.on('need', info => {
@@ -110,3 +114,34 @@ typingPanel.on('need', info => {
 ```
 
 ---
+
+### hit
+
+> 该事件在调用`TypingPanel.prototype.enterKey`方法正确键入一个按键时触发
+
+---
+
+### miss
+
+> 该事件在调用`TypingPanel.prototype.enterKey`方法错误键入一个按键时触发
+
+---
+
+### pass
+
+> 该事件在完成一个汉字的键入时触发
+
+该事件携带了当前文章键入完成度信息：
+
+```js
+typingPanel.on('pass', info => {
+    info.total;     // 文章汉字总数
+    info.current;   // 当前完成的汉字数
+})
+```
+
+---
+
+### finish
+
+> 该事件在文章键入完成时触发
