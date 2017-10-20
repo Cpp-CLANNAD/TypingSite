@@ -14,8 +14,8 @@
 tppanel = new TypingPanel(keyMap, zero);
 
 // 监听typingPanel发出的事件
-tppanel.on('needkey', info => console.log(info));
-tppanel.on('typingover', _ => alert('敲完了'));
+tppanel.on('need', info => console.log(info));
+tppanel.on('finish', _ => alert('敲完了'));
 
 // 使用新文章初始化
 tppanel.init(article);
@@ -49,6 +49,12 @@ window.addEventListener('keypress', ev => {
 
 `article`：文章，参加 XXXX
 
+#### 返回值
+
+初始化失败返回`false`，初始化成功返回`true`。
+
+初始化失败的原因通常为文章不符合规范：长度为0、文章以符号开头、`article`的数据格式错误
+
 
 ### TypingPanel.prototype.el
 
@@ -69,6 +75,7 @@ TypingPanel实例的视图元素
 
 输入一个键
 
+
 #### 参数
 
 `key`：需要输入的按键键名，可以为任意字符串，但仅当按键为`'a'`-`'z'`或`';'`时可能返回真
@@ -79,3 +86,9 @@ TypingPanel实例的视图元素
 
 
 ## 事件
+
+### need
+
+`need`事件会在调用`TypingPanel.prototype.init`返回`true`时触发一次，之后在每次调用`TypingPanel.prototype.enterKey`方法返回`true`时触发。
+
+`need`事件的回调函数的参数中携带了下一个期望的按键的信息：`type`: 
