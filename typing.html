@@ -113,22 +113,15 @@
         tpl.on('needkey', info => {
             console.log(info);
             cancelLast();
+            
             if(info.type === 'sm') {
-                tpk.highlightKey(info.key, true);
-                tpk.highlightShengmu(info.py, true);
-                cancelLast = _ => {
-                    tpk.highlightKey(info.key, false);
-                    tpk.highlightShengmu(info.py, false);
-                }
+                tpk.highlightKey(info.key).highlightShengmu(info.py);
+                cancelLast = _ => tpk.highlightKey(info.key, false).highlightShengmu(info.py, false);
             }
 
             if(info.type === 'ym') {
-                tpk.highlightKey(info.key, true);
-                tpk.highlightYunmu(info.py, true);
-                cancelLast = _ => {
-                    tpk.highlightKey(info.key, false);
-                    tpk.highlightYunmu(info.py, false);
-                }
+                tpk.highlightKey(info.key).highlightYunmu(info.py);
+                cancelLast = _ => tpk.highlightKey(info.key, false).highlightYunmu(info.py, false);
             }
         });
 
@@ -166,7 +159,7 @@
 
         function keySuccess() {
             // 两套声音方案
-            var audio = new Audio('sound/key_press_00.mp3');
+            var audio = new Audio('sound/press.mp3');
                 audio.play();
         }
 
