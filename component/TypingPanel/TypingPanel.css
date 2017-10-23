@@ -75,21 +75,13 @@
     width: 50%;
 }
 
-.tp-word-box.word-enter-finish .tp-word-in::after {
+.tp-word-box.word-enter-finish .tp-word-in::after,
+.tp-symbol-box.word-enter-finish .tp-word-in::after {
     width: 100%;
 }
 
-/* 文字后面跟着的最多三个符号会被渲染为已完成 */
-.tp-word-box.word-enter-finish + .tp-symbol-box > .tp-word,
-.tp-word-box.word-enter-finish + .tp-symbol-box + .tp-symbol-box > .tp-word,
-.tp-word-box.word-enter-finish + .tp-symbol-box + .tp-symbol-box + .tp-symbol-box > .tp-word {
-    color: black;
-}
-
 .hidden-over.typing-panel .tp-word-box.word-enter-finish,
-.hidden-over.typing-panel .tp-word-box.word-enter-finish + .tp-symbol-box,
-.hidden-over.typing-panel .tp-word-box.word-enter-finish + .tp-symbol-box + .tp-symbol-box,
-.hidden-over.typing-panel .tp-word-box.word-enter-finish + .tp-symbol-box + .tp-symbol-box + .tp-symbol-box  {
+.hidden-over.typing-panel .tp-symbol-box.word-enter-finish {
     display: none;
 }
 
