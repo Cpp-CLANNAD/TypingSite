@@ -124,7 +124,7 @@ def articleToObject(article, keymap):
         else:
             for iIdx in range(int(len(tone[iKey]) / 2)):
                 tmp = { 'word': tone[iKey][iIdx] }
-                if whiteChar.match(tmp) != None:
+                if whiteChar.match(tmp['word']) != None:
                     continue
                 rlt.append(tmp)
                 iWord += 1
