@@ -6,7 +6,8 @@
 .tip-keyboard {
     font-size: 16px;
     width: 100%;
-    max-width: 740px;
+    max-width: 760px;
+    background: rgba(255, 255, 255, .8);
     border: 1px solid gray;
     border-radius: .375em; /* 6px */
     font-family: sans-serif;
@@ -109,9 +110,9 @@
     display: none;
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 736px) {
     .tip-keyboard {
-        font-size: 14px;
+        font-size: 15px;
     }
 
     .kb-sm-code:not(.active) {
@@ -128,6 +129,12 @@
 
     .kb-ym-code {
         text-decoration: none !important;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .tip-keyboard {
+        font-size: 14px;
     }
 }
 
