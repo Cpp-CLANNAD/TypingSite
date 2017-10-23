@@ -31,6 +31,7 @@ class TipKeyboard {
             html += '<div class="kb-row">';
 
             for(let key of row) {
+                
                 let sm    = this._keyMap[key][0] || '',
                     yms   = this._keyMap[key][1];
 
@@ -41,7 +42,11 @@ class TipKeyboard {
                 html += `
                 <div class="kb-key" data-key="${key}">
                     <span class="kb-key-code">${key}</span>
-                    <span class="kb-sm-code" data-sm="${sm}">${sm}</span>
+
+                    <span class="kb-sm-code" data-sm="${sm}">
+                        ${sm}
+                    </span>
+
                     <div class="kb-ym-list">
                         ${ymListHtml}
                     </div>
