@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import json
+import json, re
 from sys import argv
 from pypinyin import pinyin as py
 from pypinyin import lazy_pinyin as lapy
@@ -110,6 +110,7 @@ def articleToObject(article, keymap):
     #     } for i in range(len(article))
     # ]
     # 非汉字desc/dmap删除项目
+    whiteChar = re.compile('^ $|^\n$|^　$|^\t$')
     ret = { 'article': [] }
     rlt = ret['article']
     iWord = 0
@@ -123,6 +124,8 @@ def articleToObject(article, keymap):
         else:
             for iIdx in range(int(len(tone[iKey]) / 2)):
                 tmp = { 'word': tone[iKey][iIdx] }
+                if whiteChar.match(tmp) != None:
+                    continue
                 rlt.append(tmp)
                 iWord += 1
     return ret
