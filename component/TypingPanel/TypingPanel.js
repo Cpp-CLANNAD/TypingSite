@@ -25,7 +25,7 @@ class TypingPanel {
 
         this._el.innerHTML = this._wordsHTML(article);
 
-        this._words = this._getWordsOperationArray(this._el);
+        this._words = this._getWordsControlArray(this._el);
 
         this._current = {
             position: 0,
@@ -60,7 +60,7 @@ class TypingPanel {
 
     }
 
-    _getWordsOperationArray(el) {
+    _getWordsControlArray(el) {
         return Array.from(el.querySelectorAll('.tp-word-box')).map(this._wordController);
     }
 
