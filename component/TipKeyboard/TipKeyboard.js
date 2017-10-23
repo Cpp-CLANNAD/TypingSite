@@ -1,33 +1,49 @@
 class TipKeyboard {
     constructor(keyMap) {
-        this.keyMap = keyMap;
-        this.el = this._createView();
+        this._keyMap = keyMap;
 
-        // 点击提示按键时触发事件
-        Array.from(this.el.querySelectorAll('.kb-key')).forEach(el => {
-            el.addEventListener('click', ev => {
-                this.trigger('keypress', [ev.currentTarget.dataset.key]);
-            });
-        })
+        this._el = document.createElement('article');
+        this._el.className = 'tip-keyboard';
+
+        this._listenEvents();
+        this._refreshView();
     }
 
-    _createView() {
-        let html = '<article class="tip-keyboard">';
+    get keyMap() {
+        return this._keyMap;
+    }
+
+    set keyMap(value) {
+        this._keyMap = value;
+        this._refreshView(); 
+        return value;
+    }
+
+    get el() {
+        return this._el;
+    }
+
+    _refreshView() {
+        let html = '';
 
         for(let row of TipKeyboard.kbLayout) {
 
             html += '<div class="kb-row">';
 
             for(let key of row) {
-                let sm = this.keyMap[key][0] || '',
-                    yms = this.keyMap[key][1];
+                let sm    = this._keyMap[key][0] || '',
+                    yms   = this._keyMap[key][1];
+
+                let ymListHtml = yms.map(ym => 
+                    `<div class="kb-ym-code" data-ym="${ym}">${ym}</div>`
+                ).join('');
 
                 html += `
                 <div class="kb-key" data-key="${key}">
                     <span class="kb-key-code">${key}</span>
                     <span class="kb-sm-code" data-sm="${sm}">${sm}</span>
                     <div class="kb-ym-list">
-                        ${yms.map(ym => '<div class="kb-ym-code" data-ym=' + ym + '>' + ym + '</div>').join('')}
+                        ${ymListHtml}
                     </div>
                 </div>`;
             }
@@ -35,26 +51,41 @@ class TipKeyboard {
             html += '</div>';
         }
 
-        html += '</article>';
+        this._el.innerHTML = html;
+    }
 
-        let parser = new DOMParser();
-        return parser.parseFromString(html, 'text/html').body.firstChild;
+    _listenEvents() {
+
+        // 点击提示按键时触发keypress事件
+        this._el.addEventListener('click', ev => {
+            let target = ev.target;
+
+            while(target != ev.currentTarget) {
+
+                if(target.classList.contains('kb-key')) {
+                    this.trigger('keypress', [target.dataset.key]);
+                    break;
+                }
+
+                target = target.parentElement;
+            }
+        });
     }
 
     highlightKey(key, isHighlight = true) {
-        var target = this.el.querySelector(`[data-key=${key}]`);
+        let target = this._el.querySelector(`[data-key=${key}]`);
         target && target.classList[isHighlight ? 'add' : 'remove']('active');
         return this;
     }
 
     highlightShengmu(shengmu, isHighlight = true) {
-        var target = this.el.querySelector(`[data-sm=${shengmu}]`);
+        let target = this._el.querySelector(`[data-sm=${shengmu}]`);
         target && target.classList[isHighlight ? 'add' : 'remove']('active');
         return this;
     }
 
     highlightYunmu(yunmu, isHighlight = true) {
-        var target = this.el.querySelector(`[data-ym=${yunmu}]`);
+        let target = this._el.querySelector(`[data-ym=${yunmu}]`);
         target && target.classList[isHighlight ? 'add' : 'remove']('active');
         return this;
     }
