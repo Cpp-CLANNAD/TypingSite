@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="third-party\Semantic\semantic.min.css">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="third-party\Semantic\semantic.min.js"></script>
+    <script src="third-party\EventEmitter\EventEmitter.min.js"></script>
+</head>
+<body>
+
+    <div style="padding-top: 100px;"></div>
+
+    <div class="ui container">
+        <div class="ui piled segment">
+            <div class="ui form">
+                <h4 class="ui horizontal divider header">
+                    选择键位方案
+                </h4>
+                
+                <div class="field">
+                    <label>键位方案</label>
+                    <select class="ui dropdown">
+                        <option value="">请选择双拼键位方案</option>
+                        <option value="1">小鹤双拼键位</option>
+                        <option value="2">微软双拼键位</option>
+                        <option value="3">自然码双拼键位</option>
+                    </select>
+                </div>
+    
+                <button class="ui teal button">添加自定义方案</button>
+                <button class="ui teal button">删除此方案</button>
+                <button class="ui teal button">编辑此方案</button>
+    
+                <h4 class="ui horizontal divider header">
+                    选择练习文章
+                </h4>
+    
+                <div class="field">
+                    <label>预设文章</label>
+                    <select class="ui dropdown">
+                        <option value=""></option>
+                        <option value="1">爱莲说</option>
+                        <option value="2">陋室铭</option>
+                        <option value="3">藤王阁序</option>
+                        <option value="1">爱莲说</option>
+                        <option value="2">陋室铭</option>
+                        <option value="3">藤王阁序</option>
+                        <option value="1">爱莲说</option>
+                        <option value="2">陋室铭</option>
+                        <option value="3">藤王阁序</option>
+                        <option value="4">自定义</option>
+                    </select>
+                </div>
+    
+                <div class="ui divider"></div>
+                
+                <div class="field disabled">
+                    <label>自定义文章</label>
+                    <textarea></textarea>
+                </div>
+    
+                <div class="ui fluid submit teal button">开始练习</div>
+    
+            </div>
+        </div>
+
+
+
+        <script>
+        $('.ui.dropdown').dropdown();
+        </script>
+    </div>
+</body>
+</html>
