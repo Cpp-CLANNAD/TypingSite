@@ -29,6 +29,7 @@
     <form id="form">
         <textarea id="textarea" cols="30" rows="10" style="width: 100%;">偶俺天只啊创！</textarea>
         <input type="submit">
+        <select name="scheme" id="schemeList"></select>
     </form>
 
     <p id="count"></p>
@@ -64,6 +65,15 @@
     <script src="component/TipKeyboard/TipKeyboard.js"></script>
     <script src="component/TypingPanel/TypingPanel.js"></script>
     <script>
+        schemeList = document.getElementById('schemeList');
+        for (var eleName in shuangpinKeyMap) {
+            var ele = document.createElement('option');
+            ele.innerText = eleName;
+            schemeList.add(ele);
+        }
+        schemeList.onchange = selectScheme;
+        let keymap = shuangpinKeyMap[schemeList.value];
+
         document.getElementById('form').addEventListener('submit', ev => {
             ev.preventDefault();
 
@@ -82,15 +92,22 @@
         });
 
 
-        tpk = new TipKeyboard(shuangpinKeyMap['小鹤双拼']['key_map']);
+        tpk = new TipKeyboard(keymap['key_map']);
 
-        tpl = new TypingPanel(shuangpinKeyMap['小鹤双拼']['key_map'], shuangpinKeyMap['小鹤双拼']['0']);
+        tpl = new TypingPanel(keymap['key_map'], keymap['0']);
+
+        function selectScheme(evt) {
+            keymap = shuangpinKeyMap[schemeList.value];
+            tpk.keyMap = keymap['key_map'];
+            tpl._keyMap = keymap['key_map'];
+            tpl._zero = keymap['0'];
+        }
 
         var cancelLast = _ => null;
         tpl.on('need', info => {
             console.log(info);
             cancelLast();
-            
+
             if(info.type === 'sm') {
                 tpk.highlightKey(info.key).highlightShengmu(info.py);
                 cancelLast = _ => tpk.highlightKey(info.key, false).highlightShengmu(info.py, false);
