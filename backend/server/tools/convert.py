@@ -117,13 +117,14 @@ def articleToObject(article, keymap):
     for iKey in range(len(tone)):
         tmp = { 'word': article[iWord] }
         if tone[iKey][0] != article[iWord][0]:
-            tmp['desc'] = tone[iKey]
-            tmp['dmap'] = keys[iKey]
+            tmp['tone'] = tone[iKey]
+            tmp['spell'] = keys[iKey]
+            tmp['canInput'] = True
             rlt.append(tmp)
             iWord += 1
         else:
             for iIdx in range(int(len(tone[iKey]) / 2)):
-                tmp = {'word': tone[iKey][iIdx]}
+                tmp = {'word': tone[iKey][iIdx], 'canInput': False}
                 iWord += 1
                 if whiteChar.match(tmp['word']) != None:
                     continue

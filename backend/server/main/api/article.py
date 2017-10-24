@@ -12,7 +12,7 @@ def getArticle(request, id=u'000'):
 
 
 def convertArticle(request, name=u'微软双拼'):
-    print(request.body.decode('utf8'))
+    # print(request.body.decode('utf8'))
     ret = pycv.articleToString(request.body.decode('utf8'), pycv.getKeymap(name))
     return HttpResponse(ret, content_type='application/json', charset='utf-8')
 
