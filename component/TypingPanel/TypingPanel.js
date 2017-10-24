@@ -97,30 +97,35 @@ class TypingPanel {
     }
 
     _wordsHTML(article) {
-        let {initial, final} = this._reverseKeyMap();
+        let {initial: initial2key, final: final2key} = this._reverseKeyMap();
+        let initialFinal2key = Object.assign({}, initial2key, final2key);
 
-        let html = article.map(val => {
-            let{word, desc, dmap} = val;
+        let html = article.map(wordInfo => {
+
+            let {canInput, word, tone, spell} = wordInfo;
+            let isZeroInitial = false;
 
             // 扩展零声母拼音数组
-            if(desc && desc.length === 1) {
-                desc = ['', ...desc];
-                dmap = this._normalizeZeroInitial(dmap[0], this._zero);
+            if(canInput && spell.length === 1) {
+                isZeroInitial = true;
+                tone    = ['', tone[0]];
+                spell   = this._normalizeZeroInitial(spell[0], this._zero);
             }
 
-            let smDesc  = desc ? desc[0] : '',
-                ymDesc  = desc ? desc[1] : '',
-                smKey   = dmap ? initial[dmap[0]] : '',
-                ymKey   = dmap ? final[dmap[1]] : '',
-                sm      = dmap ? dmap[0] : '',
-                ym      = dmap ? dmap[1] : '',
-                boxType = desc ? 'tp-word-box' : 'tp-symbol-box';
+            if(canInput === false) {
+                tone = spell = ['', ''];
+            }
+
+            let initialKey = canInput ? initialFinal2key[spell[0]] : '',
+                finalKey   = canInput ? initialFinal2key[spell[1]] : '',
+                boxType    = canInput ? 'tp-word-box' : 'tp-symbol-box';
+
 
             return `
             <div class="${boxType}">
                 <div class="tp-pinyin">
-                    <span class="tp-sm">${smDesc}</span>
-                    <span class="tp-ym">${ymDesc}</span>
+                    <span class="tp-sm">${tone[0]}</span>
+                    <span class="tp-ym">${tone[1]}</span>
                 </div>
 
                 <div class="tp-word">
@@ -130,12 +135,12 @@ class TypingPanel {
                 </div>
 
                 <div class="tp-keys">
-                    <span class="tp-sm" data-smk="${smKey}" data-sm="${sm}">
-                        ${smKey}
+                    <span class="tp-sm" data-smk="${initialKey}" data-sm="${spell[0]}">
+                        ${initialKey}
                     </span>
 
-                    <span class="tp-ym" data-ymk="${ymKey}" data-ym="${ym}">
-                        ${ymKey}
+                    <span class="tp-ym" data-ymk="${finalKey}" data-ym="${spell[1]}">
+                        ${finalKey}
                     </span>
                 </div>
 
