@@ -95,5 +95,37 @@ var shuangpinKeyMap = {
             "m": ["m", ["ian"]]
         },
         "0": "o"
+    },
+    "空模板": {
+        "key_map": {
+            "q": [null, []],
+            "w": [null, []],
+            "e": [null, []],
+            "r": [null, []],
+            "t": [null, []],
+            "y": [null, []],
+            "u": [null, []],
+            "i": [null, []],
+            "o": [null, []],
+            "p": [null, []],
+            "a": [null, []],
+            "s": [null, []],
+            "d": [null, []],
+            "f": [null, []],
+            "g": [null, []],
+            "h": [null, []],
+            "j": [null, []],
+            "k": [null, []],
+            "l": [null, []],
+            ";": [null, []],
+            "z": [null, []],
+            "x": [null, []],
+            "c": [null, []],
+            "v": [null, []],
+            "b": [null, []],
+            "n": [null, []],
+            "m": [null, []]
+        },
+        "0": 1
     }
 }
