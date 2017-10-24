@@ -97,7 +97,7 @@ class TypingPanel {
     }
 
     _wordsHTML(article) {
-        let rvKeyMap = this._reverseKeyMap();
+        let {initial, final} = this._reverseKeyMap();
 
         let html = article.map(val => {
             let{word, desc, dmap} = val;
@@ -110,8 +110,8 @@ class TypingPanel {
 
             let smDesc  = desc ? desc[0] : '',
                 ymDesc  = desc ? desc[1] : '',
-                smKey   = dmap ? rvKeyMap[dmap[0]] : '',
-                ymKey   = dmap ? rvKeyMap[dmap[1]] : '',
+                smKey   = dmap ? initial[dmap[0]] : '',
+                ymKey   = dmap ? final[dmap[1]] : '',
                 sm      = dmap ? dmap[0] : '',
                 ym      = dmap ? dmap[1] : '',
                 boxType = desc ? 'tp-word-box' : 'tp-symbol-box';
@@ -148,7 +148,9 @@ class TypingPanel {
     }
 
     _reverseKeyMap() {
-        let keyMap = this._keyMap, rv = Object.create(null);
+        let keyMap  = this._keyMap,
+            initial = Object.create(null),
+            final   = Object.create(null);
 
         for(let key in keyMap) {
             if(keyMap.hasOwnProperty(key) === false) break;
@@ -157,14 +159,14 @@ class TypingPanel {
 
             // 声母
             if(val[0])
-                rv[val[0]] = key;
+                initial[val[0]] = key;
 
             // 韵母
             for(let ym of val[1])
-                rv[ym] = key;
+                final[ym] = key;
         }
 
-        return rv;
+        return {initial, final};
     }
     
     // 零声母拼音转换为双拼形式
