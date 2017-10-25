@@ -1,12 +1,15 @@
 class TipKeyboard {
-    constructor(keyMap) {
+    constructor(keyMap = undefined) {
         this._keyMap = keyMap;
 
         this._el = document.createElement('article');
         this._el.className = 'tip-keyboard';
 
         this._listenEvents();
-        this._refreshView();
+
+        if(this._keyMap !== undefined) {
+            this._refreshView();
+        }
     }
 
     get keyMap() {
