@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="third-party\Semantic\semantic.min.css">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="third-party\Semantic\semantic.min.js"></script>
+    <script src="third-party\EventEmitter\EventEmitter.min.js"></script>
+
+    <link rel="stylesheet" href="../component/TipKeyboard/TipKeyboard.css">
+    <script src="../shuangpinKeyMap.js"></script>
+    <script src="../component/TipKeyboard/TipKeyboard.js"></script>
+</head>
+<body>
+    <div class="ui container">
+    <div class="ui piled segment">
+    <div class="ui form">
+
+        <div class="field">
+            <label>键位模板</label>
+            <select class="ui dropdown" id="tmpl-sel">
+                <option value="空模板">空模板</option>
+                <option value="小鹤双拼">小鹤双拼</option>
+                <option value="微软双拼">微软双拼</option>
+                <option value="自然码">自然码</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>零声母模式</label>
+            <select class="ui dropdown" id="zero-sel">
+                <option value="a">键 Ａ</option>
+                <option value="e">键 Ｅ</option>
+                <option value="i">键 Ｉ</option>
+                <option value="o">键 Ｏ</option>
+                <option value="u">键 Ｕ</option>
+                <option value="v">键 Ｖ</option>
+                <option value=";">键 ；</option>
+                <option value="1">韵母的第一个字母</option>
+                <option value="2">韵母的第一个字母（两个字母的韵母为全拼）</option>
+            </select>
+        </div>
+
+        
+        <h4 class="ui horizontal divider header">
+            预览键盘
+        </h4>
+        <p>点击按键设置对应按键的键位映射</p>
+        <div id="preview">
+
+        </div>
+    
+        <p></p>
+
+        <div class="ui fluid submit teal button">确认</div>
+    </div>
+    </div>
+    </div>
+
+    <div class="ui small modal" id="key-setting">
+        <div class="header"></div>
+        <div class="content">
+            <div class="ui form">
+            <div class="field">
+                <label>声母</label>
+                <select class="ui dropdown initials">
+    
+                </select>
+            </div>
+    
+            <div class="field">
+                <label>韵母1</label>
+                <select class="ui dropdown finals">
+    
+                </select>
+            </div>
+    
+            <div class="field">
+                <label>韵母2</label>
+                <select class="ui dropdown finals">
+    
+                </select>
+            </div>
+    
+            <div class="field">
+                <label>韵母3</label>
+                <select class="ui dropdown finals">
+    
+                </select>
+            </div>
+        </div>
+        </div>
+
+        <div class="actions">
+            <div class="ui approve button">确定</div>
+            <div class="ui cancel button">取消</div>
+        </div>
+    </div>
+    <script>
+        function _reverseKeyMap(keyMap) {
+            let initial = Object.create(null),
+                final   = Object.create(null);
+
+            for(let key in keyMap) {
+                if(keyMap.hasOwnProperty(key) === false) break;
+                
+                let val = keyMap[key];
+
+                // 声母
+                if(val[0])
+                    initial[val[0]] = key;
+
+                // 韵母
+                for(let ym of val[1])
+                    final[ym] = key;
+            }
+
+            return {initial, final};
+        }
+
+        function _initialFinal2KeyMap(initial2key, final2key, emptyKeyMap) {
+
+            // 深拷贝
+            emptyKeyMap = JSON.parse(JSON.stringify(emptyKeyMap));
+
+            for(let initial in initial2key) {
+                let key = initial2key[initial];
+                emptyKeyMap[key][0] = initial;
+            }
+
+            for(let final in final2key) {
+                let key = final2key[final];
+                emptyKeyMap[key][1].push(final);
+            }
+
+            return emptyKeyMap;
+        }
+
+        function _removeInitialFinal(keyMap, rmVals) {
+
+            keyMap = JSON.parse(JSON.stringify(keyMap));
+
+            for(let rmVal of rmVals) {
+                if(Boolean(rmVal) == false) break;
+
+                for(let key in keyMap) {
+
+                    if(keyMap[key][0] === rmVal)
+                        keyMap[key][0] = null;
+
+                    keyMap[key][1] = keyMap[key][1].filter(val => val !== rmVal);
+                }
+            }
+
+            return keyMap;
+        }
+    </script>
+
+    <script>
+        var sm = ["q", "w", "r", "t", "y", "sh", "ch", "p", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "zh", "b", "n", "m"];
+        var ym = ["iu", "ia", "ua", "e", "uan", "er", "ue", "uai", "v", "u", "i", "o", "uo", "un", "a", "ong", "iong", "iang", "uang", "en", "eng", "ang", "an", "ao", "ai", "ing", "ei", "ie", "iao", "ve", "ui", "ou", "in", "ian"];
+        var keyMap, zero;
+        var initial2key, final2key;
+        var kb = new TipKeyboard();
+        preview.appendChild(kb.el);
+        kb.el.style.margin = '0 auto';
+
+
+        $('.initials').html('<option value="">无</option>' + sm.map(val => `<option value="${val}">${val}</option>`));
+        $('.finals').html('<option value="">无</option>' + ym.map(val => `<option value="${val}">${val}</option>`));
+
+        keyMap = shuangpinKeyMap[$('#tmpl-sel').val()]['key_map'];
+        zero = shuangpinKeyMap[$('#tmpl-sel').val()]['0'];
+        $(`#zero-sel [value=${zero}]`).prop('selected', true);
+        kb.keyMap = keyMap;
+        
+
+        $('#tmpl-sel').change(ev => {
+            keyMap = shuangpinKeyMap[$('#tmpl-sel').val()]['key_map'];
+            zero = shuangpinKeyMap[$('#tmpl-sel').val()]['0'];
+            $(`#zero-sel [value=${zero}]`).prop('selected', true);
+            kb.keyMap = keyMap;
+        });
+
+
+        kb.on('keypress', key => {
+            $('#key-setting')
+            .modal({
+                inverted: true,
+                onDeny: _ => {
+                    // 
+                },
+                onApprove: _ => {
+
+                    // 从当前keyMap中移除该键当前对应的声母韵母
+                    keyMap = _removeInitialFinal(keyMap, [keyMap[key][0], ...keyMap[key][1]]);
+
+                    let initial = $('.initials').val();
+                    if(!initial) initial = null;
+
+                    let uniqFinals = [];
+                    $('.finals').each(function(index) {
+                        let final = $(this).val();
+                        if(final && uniqFinals.includes(final) === false) uniqFinals.push(final);
+                    });
+
+                    // 从当前keyMap中移除新选择的声母韵母（移除选择的声母韵母在其他键位上的映射）
+                    keyMap = _removeInitialFinal(keyMap, [initial, ...uniqFinals]);
+
+                    keyMap[key][0] = initial;
+                    keyMap[key][1] = uniqFinals;
+
+                    kb.keyMap = keyMap;
+                }
+            })
+            .modal('setting', 'duration', 300)
+            .modal('show');
+            
+            $('#key-setting .header').html(key);
+            $('#key-setting .initials').val(keyMap[key][0]);
+            $('#key-setting .finals').each((index, el) => {
+                let final = keyMap[key][1][index];
+                if(final) {
+                    $(el).val(final);
+                } else {
+                    $(el).val('');
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
