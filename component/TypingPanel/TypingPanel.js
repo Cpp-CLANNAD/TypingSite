@@ -97,7 +97,7 @@ class TypingPanel {
     }
 
     _wordsHTML(article) {
-        let {initial: initial2key, final: final2key} = this._reverseKeyMap();
+        let {initial2key, final2key} = this._reverseKeyMap();
         let initialFinal2key = Object.assign({}, initial2key, final2key);
 
         let html = article.map(wordInfo => {
@@ -153,9 +153,9 @@ class TypingPanel {
     }
 
     _reverseKeyMap() {
-        let keyMap  = this._keyMap,
-            initial = Object.create(null),
-            final   = Object.create(null);
+        let keyMap      = this._keyMap,
+            initial2key = Object.create(null),
+            final2key   = Object.create(null);
 
         for(let key in keyMap) {
             if(keyMap.hasOwnProperty(key) === false) break;
@@ -164,14 +164,14 @@ class TypingPanel {
 
             // 声母
             if(val[0])
-                initial[val[0]] = key;
+                initial2key[val[0]] = key;
 
             // 韵母
             for(let ym of val[1])
-                final[ym] = key;
+                final2key[ym] = key;
         }
 
-        return {initial, final};
+        return {initial2key, final2key};
     }
     
     // 零声母拼音转换为双拼形式
