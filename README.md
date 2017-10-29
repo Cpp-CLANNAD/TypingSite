@@ -1,10 +1,10 @@
 ## 文章结构
 
-`desc`：对于零声母拼音是一个长度为1的数组，[0]为韵母读音；对于普通拼音是一个长度为2的数组，[0]为声母读音，[1]为韵母读音。该字段用于对文字注音显示，对标点符号这类无需注音的字符，省略此键
+`tone`：带音调的拼音，对于零声母拼音是一个长度为1的数组，[0]为韵母；对于普通拼音是一个长度为2的数组，[0]为声母，[1]为韵母。该字段用于对文字注音显示
 
-`dmap`：和`desc`中的拼音对应，但是不应该有注音
+`spell`：不带音调的拼音，数组格式说明与`tone`字段相同
 
-注：`desc`和`dmap`字段的数组长度应该相同，当`desc`字段被省略时，同时省略`dmap`字段。
+`canInput`：对于文字此项值为`true`；对于其他字符，此项为`false`。当此项为`false`时，`tone`和`spell`字段不存在
 
 示例：
 
@@ -13,31 +13,37 @@
     "article": [
         {
             "word": "偶",
-            "desc": ["ǒu"],
-            "dmap": ["ou"]
+            "tone": ["ǒu"],
+            "spell": ["ou"],
+            "canInput": true
         },
         {
             "word": "昂",
-            "desc": ["áng"],
-            "dmap": ["ang"]
+            "tone": ["áng"],
+            "spell": ["ang"],
+            "canInput": true
         },
         {
             "word": "天",
-            "desc": ["t", "iān"],
-            "dmap": ["t", "ian"]
+            "tone": ["t", "iān"],
+            "spell": ["t", "ian"],
+            "canInput": true
         },
         {
             "word": "只",
-            "desc": ["zh", "ǐ"],
-            "dmap": ["zh", "i"]
+            "tone": ["zh", "ǐ"],
+            "spell": ["zh", "i"],
+            "canInput": true
         },
         {
             "word": "啊",
-            "desc": ["a"],
-            "dmap": ["a"]
+            "tone": ["a"],
+            "spell": ["a"],
+            "canInput": true
         },
         {
-            "word": "！"
+            "word": "！",
+            "canInput": false
         }
     ]
 }
