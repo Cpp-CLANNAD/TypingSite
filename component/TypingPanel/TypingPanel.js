@@ -21,7 +21,7 @@ class TypingPanel {
             throw new Error('Argument must be a array with a length greater than zero');
         }
 
-        // article = this._normalizeArticle(article);
+        this._normalizeArticle(article);
 
         this._el.innerHTML = this._wordsHTML(article);
 
@@ -57,7 +57,9 @@ class TypingPanel {
     }
 
     _normalizeArticle(article) {
-
+        while(article[0].canInput === false) {
+            article.shift();
+        }
     }
 
     _getWordsControlArray(el) {
