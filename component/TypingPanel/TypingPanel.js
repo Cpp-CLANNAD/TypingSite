@@ -97,7 +97,7 @@ class TypingPanel {
     }
 
     _wordsHTML(article) {
-        let {initial2key, final2key} = this._reverseKeyMap();
+        let {initial: initial2key, final: final2key} = this._reverseKeyMap();
         let initialFinal2key = Object.assign({}, initial2key, final2key);
 
         let html = article.map(wordInfo => {
@@ -171,7 +171,7 @@ class TypingPanel {
                 final[ym] = key;
         }
 
-        return {initial2key, final2key};
+        return {initial, final};
     }
     
     // 零声母拼音转换为双拼形式
