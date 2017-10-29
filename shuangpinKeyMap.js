@@ -94,7 +94,7 @@ var shuangpinKeyMap = {
             "n": ["n", ["in"]],
             "m": ["m", ["ian"]]
         },
-        "0": "o"
+        "0": 2
     },
     "空模板": {
         "key_map": {
