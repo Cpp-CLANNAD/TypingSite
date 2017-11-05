@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
     <link rel="stylesheet" href="third-party\Semantic\semantic.min.css">
+
     <script src="third-party\jquery\jquery.min.js"></script>
     <script src="third-party\Semantic\semantic.min.js"></script>
     <script src="third-party\EventEmitter\EventEmitter.min.js"></script>
+
+    <script src="KeyMapStore.js"></script>
 </head>
 <body>
 
@@ -24,15 +28,13 @@
             
             <div class="field">
                 <label>键位方案</label>
-                <select class="ui">
-                    <option value="1">小鹤双拼</option>
-                    <option value="2">微软双拼</option>
-                    <option value="3">自然码</option>
+                <select class="ui" id="scheme-sel">
+ 
                 </select>
             </div>
 
-            <button class="ui teal button">添加自定义方案</button>
-            <button class="ui teal button">删除此方案</button>
+            <a href="custom.html" class="ui teal button">添加自定义方案</a>
+            <button class="ui teal button" id='del-btn'>删除此方案</button>
 
             <h4 class="ui horizontal divider header">
                 选择练习文章
@@ -47,17 +49,78 @@
 
             <div class="ui divider"></div>
             
-            <div class="field disabled">
+            <div class="field">
                 <label>自定义文章</label>
-                <textarea></textarea>
+                <textarea id="custom-article"></textarea>
             </div>
 
-            <div class="ui fluid submit teal button">开始练习</div>
+            <div class="ui fluid submit teal button" id="ok-btn">开始练习</div>
 
         </div>
     </div>
     </div>
     </div>
 
+    <script>
+        class StartPage {
+            constructor() {
+                this.$el = $('#start-page');
+                this.$   = selector => this.$el.find(selector);
+
+                this.keyMapStore = new KeyMapStore();
+                
+                this.refreshScheme();
+
+                this.$('#del-btn').on('click', _ => {
+                    this.keyMapStore.remove(this.$('#scheme-sel').val()) ? alert('删除成功') : alert('删除失败');
+                    this.refreshScheme();
+                });
+
+                this.$('#ok-btn').on('click', _ => {
+                    if(this.validate() !== true) {
+                        return;
+                    }
+
+                    this.fetchArticle();
+                });
+            }
+
+            refreshScheme() {
+                let schemeOptions = this.keyMapStore.list().map(name => `<option value="${name}">${name}</option>`).join('');
+                this.$('#scheme-sel').html(schemeOptions);
+            }
+
+            fetchArticle() {
+                fetch('http://nfwsa.com:8001/api/article/convert', {
+                    method: 'post',
+                    body: this.$('#custom-article').val()
+                })
+                .then(res => res.json())
+                .then(json => {
+                    let scheme = this.keyMapStore.get(this.$('#scheme-sel').val());
+                    sessionStorage.setItem('typingInfo', JSON.stringify({
+                        article: json.article,
+                        scheme: scheme
+                    }));
+                    location.href = 'typing.html';
+                })
+                .catch(err => {
+                    alert(err);
+                });
+            }
+
+            validate() {
+                let {successful: schemeSuccessful} = KeyMapStore.validate(this.keyMapStore.get(this.$('#scheme-sel').val()));
+                if(schemeSuccessful === false) {
+                    alert('当前键位方案不合法，请重新选择');
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        var startPage = new StartPage();
+    </script>
 </body>
 </html>
