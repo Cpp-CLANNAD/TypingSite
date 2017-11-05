@@ -22,6 +22,10 @@
         body {
             margin: 0;
         }
+        #tip-keyboard-wrap {
+            display: flex;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -38,8 +42,12 @@
 
         <p id="count"> </p>
         
-        <div class="ui piled segment">
-            <div id="typing-panel"></div>
+        <div class="ui piled segment" id="typing-panel-wrap">
+
+        </div>
+
+        <div id="tip-keyboard-wrap">
+            
         </div>
     </div>
     </div>
@@ -102,7 +110,7 @@
             cancelLast();
         });
 
-        document.getElementById('typing-panel').appendChild(tpl.el);
+        document.getElementById('typing-panel-wrap').appendChild(tpl.el);
 
         tpk.on('keypress', key => {
             tpl.enterKey(key)
@@ -128,11 +136,7 @@
         tpl.init(article);
         
 
-        var container = document.getElementById('typing-page').children[0];
-        container.appendChild(tpk.el);
-        tpk.el.style.position = 'fixed';
-        tpk.el.style.bottom = '0';
-        tpk.el.style.margin = '0 auto';
+        document.getElementById('tip-keyboard-wrap').appendChild(tpk.el);
     </script>
 </body>
 </html>
