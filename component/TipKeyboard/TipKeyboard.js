@@ -81,19 +81,19 @@ class TipKeyboard {
     }
 
     highlightKey(key, isHighlight = true) {
-        let target = this._el.querySelector(`[data-key=${key}]`);
+        let target = this._el.querySelector(`[data-key="${key}"]`);
         target && target.classList[isHighlight ? 'add' : 'remove']('active');
         return this;
     }
 
     highlightShengmu(shengmu, isHighlight = true) {
-        let target = this._el.querySelector(`[data-sm=${shengmu}]`);
+        let target = this._el.querySelector(`[data-sm="${shengmu}"]`);
         target && target.classList[isHighlight ? 'add' : 'remove']('active');
         return this;
     }
 
     highlightYunmu(yunmu, isHighlight = true) {
-        let target = this._el.querySelector(`[data-ym=${yunmu}]`);
+        let target = this._el.querySelector(`[data-ym="${yunmu}"]`);
         target && target.classList[isHighlight ? 'add' : 'remove']('active');
         return this;
     }
