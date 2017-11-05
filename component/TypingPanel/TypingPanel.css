@@ -49,6 +49,7 @@
 }
 
 .tp-word-in {
+    display: inline-block;
     position: relative;
 }
 
