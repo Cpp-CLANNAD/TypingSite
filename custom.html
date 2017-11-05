@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
     <link rel="stylesheet" href="third-party\Semantic\semantic.min.css">
+    <link rel="stylesheet" href="./component/TipKeyboard/TipKeyboard.css">
+
     <script src="third-party\jquery\jquery.min.js"></script>
     <script src="third-party\Semantic\semantic.min.js"></script>
     <script src="third-party\EventEmitter\EventEmitter.min.js"></script>
 
-    <link rel="stylesheet" href="./component/TipKeyboard/TipKeyboard.css">
     <script src="./component/TipKeyboard/TipKeyboard.js"></script>
     <script src="KeyMapStore.js"></script>
 </head>
@@ -105,33 +107,33 @@
         class UserDefinedPage {
             constructor() {
                 this.$el = $('#user-defined-page');
-
+                this.$   = selector => this.$el.find(selector);
 
                 this.previewKeyBoard = new TipKeyboard();
-                this.$el.find('#preview').append(this.previewKeyBoard.el);
+                this.$('#preview').append(this.previewKeyBoard.el);
 
                 
                 let noneOptionHTML = '<option value="">无</option>',
-                makeOptionHTML = val => `<option value="${val}">${val}</option>`;
+                    makeOptionHTML = val => `<option value="${val}">${val}</option>`;
                 
-                this.$el.find('#key-setting .initials').html(noneOptionHTML + KeyMapStore.initials.map(makeOptionHTML).join(''));
-                this.$el.find('#key-setting .finals').html(noneOptionHTML + KeyMapStore.finals.map(makeOptionHTML).join(''));
+                this.$('#key-setting .initials').html(noneOptionHTML + KeyMapStore.initials.map(makeOptionHTML).join(''));
+                this.$('#key-setting .finals').html(noneOptionHTML + KeyMapStore.finals.map(makeOptionHTML).join(''));
                 
                 
                 this.keyMapStore = new KeyMapStore();
-                this.$el.find('#tmpl-sel').html(this.keyMapStore.list().map(makeOptionHTML).join(''))
+                this.$('#tmpl-sel').html(this.keyMapStore.list().map(makeOptionHTML).join(''))
 
                 this._onKeyMapTemplateSelected();
-                this.$el.find('#tmpl-sel').on('change', this._onKeyMapTemplateSelected.bind(this));
+                this.$('#tmpl-sel').on('change', this._onKeyMapTemplateSelected.bind(this));
 
 
-                this.$el.find('#zero-sel').on('change', this._onZeroSelected.bind(this));
+                this.$('#zero-sel').on('change', this._onZeroSelected.bind(this));
 
 
                 this.previewKeyBoard.on('keypress', this._keySetting.bind(this));
 
 
-                this.$el.find('#complete').click(ev => {
+                this.$('#complete').click(ev => {
                     let scheme = {keyMap: this.keyMap, '0': this.zero};
                     let validateResult = KeyMapStore.validate(scheme);
                     if(validateResult.successful === false) {
@@ -144,16 +146,16 @@
 
                 // #key-setting作为模态框使用，semantic-ui中的模态框弹出时会将模态框元素提升到页面顶层
                 // 这将导致#key-setting弹出时无法在$el中选取到#key-setting，所以在构造函数中先保存引用
-                this.$keySetting = this.$el.find('#key-setting');
+                this.$keySetting = this.$('#key-setting');
             }
 
             _onKeyMapTemplateSelected() {
-                let keyMapName = this.$el.find('#tmpl-sel').val(),
+                let keyMapName = this.$('#tmpl-sel').val(),
                     zero       = this.keyMapStore.get(keyMapName)['0'],
                     keyMap     = this.keyMapStore.get(keyMapName)['keyMap'];
 
                 this.previewKeyBoard.keyMap = keyMap;
-                this.$el.find('#zero-sel').val(zero);
+                this.$('#zero-sel').val(zero);
 
                 zero = isNaN(zero) ? zero : Number(zero);  // "1","2" 转换成数字
                 this.keyMap = keyMap;
@@ -161,7 +163,7 @@
             }
 
             _onZeroSelected() {
-                let zero = this.$el.find('#zero-sel').val();
+                let zero = this.$('#zero-sel').val();
                 zero = isNaN(zero) ? zero : Number(zero);  // "1","2" 转换成数字
                 this.zero = zero;
             }
