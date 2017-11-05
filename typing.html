@@ -5,8 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
+    <link rel="stylesheet" href="third-party\Semantic\semantic.min.css">
     <link rel="stylesheet" href="component/TipKeyboard/TipKeyboard.css">
     <link rel="stylesheet" href="component/TypingPanel/TypingPanel.css">
+
+    <script src="https://cdn.bootcss.com/EventEmitter/5.2.3/EventEmitter.min.js"></script>
+
+    <script src="component/TipKeyboard/TipKeyboard.js"></script>
+    <script src="component/TypingPanel/TypingPanel.js"></script>
+
     <style>
         html, body {
             height: 100%;
@@ -18,21 +26,23 @@
 </head>
 <body>
 
-    <label><input type="checkbox" id="s1" checked>显示已完成</label>
-    <label><input type="checkbox" id="s2" checked>显示拼音提示</label>
-    <label><input type="checkbox" id="s3" checked>显示双拼提示</label>
+    <div id="typing-page">
+    <div class="ui container">
+        <label><input type="checkbox" id="s1" checked>显示已完成</label>
+        <label><input type="checkbox" id="s2" checked>显示拼音提示</label>
+        <label><input type="checkbox" id="s3" checked>显示双拼提示</label>
+    
+        <label><input type="checkbox" id="s4" checked>显示键盘声母</label>
+        <label><input type="checkbox" id="s5" checked>显示键盘韵母</label>
+        <label><input type="checkbox" id="s6" checked>显示按键提示</label>
 
-    <label><input type="checkbox" id="s4" checked>显示键盘声母</label>
-    <label><input type="checkbox" id="s5" checked>显示键盘韵母</label>
-    <label><input type="checkbox" id="s6" checked>显示按键提示</label>
-
-    <form id="form">
-        <textarea id="textarea" cols="30" rows="10" style="width: 100%;">偶俺天只啊创！</textarea>
-        <input type="submit">
-        <select name="scheme" id="schemeList"></select>
-    </form>
-
-    <p id="count"></p>
+        <p id="count"> </p>
+        
+        <div class="ui piled segment">
+            <div id="typing-panel"></div>
+        </div>
+    </div>
+    </div>
 
     <script>
         s1.onchange = function(ev) {
@@ -60,52 +70,15 @@
         }
      </script>
 
-    <script src="shuangpinKeyMap.js"></script>
-    <script src="https://cdn.bootcss.com/EventEmitter/5.2.3/EventEmitter.min.js"></script>
-    <script src="component/TipKeyboard/TipKeyboard.js"></script>
-    <script src="component/TypingPanel/TypingPanel.js"></script>
     <script>
-        schemeList = document.getElementById('schemeList');
-        for (var eleName in shuangpinKeyMap) {
-            var ele = document.createElement('option');
-            ele.innerText = eleName;
-            schemeList.add(ele);
-        }
-        schemeList.onchange = selectScheme;
-        let keymap = shuangpinKeyMap[schemeList.value];
+        var {article, scheme: {keyMap, '0': zero}} = JSON.parse(sessionStorage.getItem('typingInfo'));
 
-        document.getElementById('form').addEventListener('submit', ev => {
-            ev.preventDefault();
+        tpk = new TipKeyboard(keyMap);
 
-            fetch('http://nfwsa.com:8001/api/article/convert', {
-                method: 'post',
-                body: document.getElementById('textarea').value
-            })
-            .then(res => res.json())
-            .then(json => {
-                console.log(json);
-                tpl.init(json.article);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-        });
-
-
-        tpk = new TipKeyboard(keymap['key_map']);
-
-        tpl = new TypingPanel(keymap['key_map'], keymap['0']);
-
-        function selectScheme(evt) {
-            keymap = shuangpinKeyMap[schemeList.value];
-            tpk.keyMap = keymap['key_map'];
-            tpl._keyMap = keymap['key_map'];
-            tpl._zero = keymap['0'];
-        }
+        tpl = new TypingPanel(keyMap, zero);
 
         var cancelLast = _ => null;
         tpl.on('need', info => {
-            console.log(info);
             cancelLast();
 
             if(info.type === 'sm') {
@@ -129,7 +102,7 @@
             cancelLast();
         });
 
-        document.body.appendChild(tpl.el);
+        document.getElementById('typing-panel').appendChild(tpl.el);
 
         tpk.on('keypress', key => {
             tpl.enterKey(key)
@@ -152,11 +125,14 @@
                 audio.play();
         }
 
-        document.body.appendChild(tpk.el);
+        tpl.init(article);
+        
+
+        var container = document.getElementById('typing-page').children[0];
+        container.appendChild(tpk.el);
         tpk.el.style.position = 'fixed';
         tpk.el.style.bottom = '0';
-
-
+        tpk.el.style.margin = '0 auto';
     </script>
 </body>
 </html>
